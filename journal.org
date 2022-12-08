@@ -1,0 +1,17 @@
+     SAAD David      david.saad@etu.u-paris.fr
+
+     MACIA Lua       lua.macia@etu.u-paris.fr
+     
+
+        ANALYSE DE PERFORMANCE LSF
+
+
+
+<08/12/2022>
+Changement de sujet : cabane à oiseaux.
+Anciennes entrées du journal (pré-git) dans log/
+
+- À FAIRE :
+ + se renseigner sur les bibliothèques de traitement d'images et les fonctions potentiellement utiles
+ + faire une liste des critères qu'on voudrait identifier sur l'oiseau
+ 
