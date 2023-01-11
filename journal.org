@@ -15,3 +15,13 @@ Anciennes entrées du journal (pré-git) dans log/
  + se renseigner sur les bibliothèques de traitement d'images et les fonctions potentiellement utiles
  + faire une liste des critères qu'on voudrait identifier sur l'oiseau
  
+11/01/2023
+FAIT :
+- choix d'openCV, documentation sur les fonctions utiles
+- implémentation "à la main" : dilatation, érosion
+À FAIRE :
+- mesurer la surface apparente de l'oiseau
+- en déduire la taille réelle, selon la position (distance à la caméra)
+- faire des tests, avec des "oiseaux en carton"
+- penser aux performances
+
