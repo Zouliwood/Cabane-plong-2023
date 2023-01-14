@@ -1,6 +1,8 @@
 #include <opencv2/opencv.hpp>
 #include <thread>
 #include <unistd.h>
+#include <functional>
+
 
 using namespace cv;
 using namespace std;
@@ -56,7 +58,7 @@ void morphGradient(const Mat &image, Mat &result, int rayon = 5) {
         img_erosion.at<uchar>(i, j) = (int) minVal;
         img_dilatation.at<uchar>(i, j) = (int) maxVal;
     };
-
+    
     run<function<void(int, int, int)>>(image, exp, rayon);
 
     result = img_dilatation - img_erosion;
@@ -66,7 +68,7 @@ void morphGradient(const Mat &image, Mat &result, int rayon = 5) {
  * Permet d'isoler un élément en fonction d'une image de référence
  * @param image      Image contenant l'objet à isoler
  * @param background Image de référence
- * @param result     Objet de retour de la fonction
+ * @param result     Objet de retour derun la fonction
  * @param seuil      Le seuil permettant de délimiter la marge d'erreur
  */
 void masque(const Mat &image, const Mat &background, Mat &result, int seuil = 5) {
@@ -76,11 +78,17 @@ void masque(const Mat &image, const Mat &background, Mat &result, int seuil = 5)
             result.at<uchar>(i, j) = 0;
     };
 
+    
+
     run<function<void(int, int, int)>>(image, exp);
 }
 
 
-//affichage des histogrammes (rgb)
+
+
+/*
+affichage des histogrammes (rgb)
+*/
 
 int histogramme(Mat src){
 
@@ -132,13 +140,35 @@ int histogramme(Mat src){
 
 }
 
+
+vector<Vec3b> listcolours(Mat imc){
+    vector<Vec3b> colors;
+
+    for(int y=0;y<imc.rows;y++){
+        for(int x=0;x<imc.cols;x++){
+
+            Vec3b c =imc.at<Vec3b>(Point(x,y));
+            
+            colors.push_back(c);
+        }
+
+    }
+
+    return colors;
+
+}
+
+
+
 int main(int argc, char** argv ){
 
 
     //TODO: test avec d'autres espaces colorimétriques
-    Mat imagecolor = imread( "../bird.jpg", IMREAD_COLOR);
+    Mat imagecolor = imread( "../images/bird.jpg", IMREAD_COLOR);
+
 
     histogramme(imagecolor);
+    
     Mat imagea = imread("../img/a.jpg", IMREAD_GRAYSCALE);
     Mat images = imread("../img/s.jpg", IMREAD_GRAYSCALE);
 
@@ -150,8 +180,14 @@ int main(int argc, char** argv ){
 
     cout << imwrite("../save.jpg", img_result) << endl;
 
-    //imshow("Gradiant Morphologique", img_result);
-    //waitKey(0);
+    vector<Vec3b> couleurs = listcolours(imagecolor);
+    
+    /*for(Vec3b v:couleurs){
+        cout << v << endl;
+    }*/
+   
+    imshow("Gradiant Morphologique", img_result);
+    waitKey(0);
     destroyAllWindows();
 
     return 0;
