@@ -25,3 +25,12 @@ FAIT :
 - faire des tests, avec des "oiseaux en carton"
 - penser aux performances
 
+18/01/2023
+DONNÉ : rpi 3B+ et caméra usb
+FAIT :
+- utilisation de threads pour dilatation, etc.
+- histogramme des couleurs
+TODO:
+- tester le Rpi avec la caméra et le code existant
+- utiliser les histogrammes pour classifier automatiquement les oiseaux ; évaluer l'efficacité de cette méthode
+
