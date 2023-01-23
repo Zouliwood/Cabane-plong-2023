@@ -8,7 +8,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 find_package( OpenCV REQUIRED )
 include_directories( ${OpenCV_INCLUDE_DIRS} )
 
-add_executable(BirdBox main.cpp)
+add_executable(BirdBox main.cpp src/Camera.cpp hrc/Camera.hpp src/Image.cpp hrc/Image.hpp src/Calcul.cpp hrc/Calcul.hpp)
 
 #openCV
 target_link_libraries( BirdBox ${OpenCV_LIBS} )
