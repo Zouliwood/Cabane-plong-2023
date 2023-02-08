@@ -34,3 +34,14 @@ TODO:
 - tester le Rpi avec la caméra et le code existant
 - utiliser les histogrammes pour classifier automatiquement les oiseaux ; évaluer l'efficacité de cette méthode
 
+08/02/2023
+FAIT : 
+- installation, configuration du Rpi
+- utilisation de 2 caméras pour détecter la distance
+- commencé à faire des tests unitaires
+À FAIRE : 
+- conseil : calculer la distance autrement, avec seulement une caméra et des repères au sol.
+- capturer les images de la caméra directement depuis le code
+- mettre en place l'infrastructure pour enregistrer les caractéristiques des oiseaux dans une BDD
+- trouver comment comment comparer/mesurer la distance entre deux entrées
+
