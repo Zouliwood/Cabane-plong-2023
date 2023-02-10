@@ -76,8 +76,8 @@ vector<Vec3b> listcolours(Mat imc) {
 int main(/*int argc, char **argv*/) {
 
 
-    Mat el1 = imread("../../images/items2_lr.png", IMREAD_GRAYSCALE);
-    Mat el2 = imread("../../images/items2_rr.png", IMREAD_GRAYSCALE);
+    Mat el1 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
+    Mat el2 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
     float szObject = Calcul::sizeObject(el1, el2);
     cout << "sizeObject: " << szObject << endl;
 
@@ -85,7 +85,7 @@ int main(/*int argc, char **argv*/) {
 
     return 0;
 
-    Mat map = imread("../../images/bird.jpg");
+    /*Mat map = imread("../../images/bird.jpg");
     double min;
     double max;
     cv::minMaxIdx(map, &min, &max);
@@ -125,6 +125,6 @@ int main(/*int argc, char **argv*/) {
 
     for (Vec3b v: couleurs) {
         cout << v << endl;
-    }
+    }*/
 
 }

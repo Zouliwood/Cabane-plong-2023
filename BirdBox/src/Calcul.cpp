@@ -42,3 +42,7 @@ float Calcul::sizeObject(Mat &imageLeft, Mat &imageRight) {
 
     return (distance < 0) ? -1 : 2 * ratio * distance;
 }
+
+float Calcul::angleSolid(){
+    return 0;
+}

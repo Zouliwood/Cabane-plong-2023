@@ -12,6 +12,7 @@ public:
 
     static float sizeObject(Mat &imageLeft, Mat &imageRight);
 
+    static float angleSolid();
 };
 
 #endif //BIRDBOX_CALCUL_HPP
