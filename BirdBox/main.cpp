@@ -73,8 +73,7 @@ vector<Vec3b> listcolours(Mat imc) {
 
 }
 
-int main(/*int argc, char **argv*/) {
-
+int main(int argc, char **argv) {
 
     Mat el1 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
     Mat el2 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
@@ -84,47 +83,5 @@ int main(/*int argc, char **argv*/) {
     destroyAllWindows();
 
     return 0;
-
-    /*Mat map = imread("../../images/bird.jpg");
-    double min;
-    double max;
-    cv::minMaxIdx(map, &min, &max);
-    cv::Mat adjMap;
-    cv::convertScaleAbs(map, adjMap, 255 / max);
-    cout << imwrite("../save.jpg", adjMap) << endl;
-    //imshow("Out", falseColorsMap);
-
-    return EXIT_SUCCESS;
-
-    //TODO: test avec d'autres espaces colorimétriques
-    Mat imagecolor = imread("../images/bird.jpg", IMREAD_COLOR);
-
-
-    histogramme(imagecolor);
-
-    Mat imagea = imread("../img/a.jpg", IMREAD_GRAYSCALE);
-    Mat images = imread("../img/s.jpg", IMREAD_GRAYSCALE);
-
-    Mat image_masque = imagea.clone();
-    Image::masque(imagea, images, image_masque, 50);
-
-    Mat img_result = Mat::zeros(image_masque.size(), image_masque.type());
-    Image::morphGradient(image_masque, img_result, 10);
-
-    cout << imwrite("../save.jpg", img_result) << endl;
-
-
-    imshow("Gradiant Morphologique", img_result);
-    waitKey(0);
-    destroyAllWindows();
-
-
-    return 0;
-
-    vector<Vec3b> couleurs = listcolours(imagecolor);
-
-    for (Vec3b v: couleurs) {
-        cout << v << endl;
-    }*/
 
 }

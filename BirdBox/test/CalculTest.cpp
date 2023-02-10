@@ -4,5 +4,4 @@
 TEST(test, demo){
     EXPECT_TRUE(true);
     EXPECT_EQ(0, Calcul::angleSolid());
-    /*EXPECT_EQ(0, Calcul::angleSolid());*/
 }

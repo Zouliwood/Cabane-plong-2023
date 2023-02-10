@@ -43,6 +43,7 @@ float Calcul::sizeObject(Mat &imageLeft, Mat &imageRight) {
     return (distance < 0) ? -1 : 2 * ratio * distance;
 }
 
+//TODO: Implémenter la fonction permettant de calculer la surface d'un oiseau.
 float Calcul::angleSolid(){
     return 0;
 }
