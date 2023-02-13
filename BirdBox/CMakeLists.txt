@@ -24,12 +24,16 @@ set(Sources "main.cpp"
     "${SOURCES_DIR}/Camera.cpp"
     "${SOURCES_DIR}/Calcul.cpp"
     "${SOURCES_DIR}/Image.cpp"
+    "${SOURCES_DIR}/Bird.cpp"
+    "${SOURCES_DIR}/Matrix.cpp"
 )
 
 set(Headers
     "${HEADERS_DIR}/Camera.hpp"
     "${HEADERS_DIR}/Calcul.hpp"
     "${HEADERS_DIR}/Image.hpp"
+    "${HEADERS_DIR}/Bird.hpp"
+    "${HEADERS_DIR}/Matrix.hpp"
 )
 
 # Exécutable

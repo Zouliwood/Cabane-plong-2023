@@ -1,4 +1,5 @@
 #include "hrc/Calcul.hpp"
+#include "hrc/Matrix.hpp"
 
 
 /*
@@ -75,12 +76,37 @@ vector<Vec3b> listcolours(Mat imc) {
 
 int main(int argc, char **argv) {
 
-    Mat el1 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
+    auto *m = new Matrix(3, 3);
+
+    (*m)[2][2] = 2;
+
+    cout << (*m)[2][2] <<endl;
+
+    cout << *m <<endl;
+
+
+    auto *mm = new Matrix(3, 3);
+
+    /*(*mm)[2][2] = 2;*/
+
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            (*mm)[i][j] = 1;
+        }
+    }
+
+    Matrix &res = (*m) * (*mm);
+
+    cout << res << endl;
+
+    delete m;
+
+    /*Mat el1 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
     Mat el2 = imread("../../images/bird.jpg", IMREAD_GRAYSCALE);
     float szObject = Calcul::sizeObject(el1, el2);
     cout << "sizeObject: " << szObject << endl;
 
-    destroyAllWindows();
+    destroyAllWindows();*/
 
     return 0;
 

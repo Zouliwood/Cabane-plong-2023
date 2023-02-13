@@ -4,19 +4,23 @@ set(This BirdBoxTest)
 
 # Fichiers de test
 set(TestSources
-        CalculTest.cpp)
+        CalculTest.cpp MatrixTest.cpp)
 
 # Sources et Headers
 set(Sources
     "${SOURCES_TEST_DIR}/Camera.cpp"
     "${SOURCES_TEST_DIR}/Calcul.cpp"
     "${SOURCES_TEST_DIR}/Image.cpp"
+    "${SOURCES_TEST_DIR}/Bird.cpp"
+    "${SOURCES_TEST_DIR}/Matrix.cpp"
 )
 
 set(Headers
     "${HEADERS_TEST_DIR}/Camera.hpp"
     "${HEADERS_TEST_DIR}/Calcul.hpp"
     "${HEADERS_TEST_DIR}/Image.hpp"
+    "${HEADERS_TEST_DIR}/Bird.hpp"
+    "${HEADERS_TEST_DIR}/Matrix.hpp"
 )
 
 # Exécutable
