@@ -1,8 +1,4 @@
-#include "hrc/Couleur.hpp"
-#include <functional>
-#include <thread>
-
-using namespace std;
+#include "../hrc/Couleur.hpp"
 
 /*
 affichage des histogrammes (rgb)

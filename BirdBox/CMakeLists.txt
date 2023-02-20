@@ -4,7 +4,6 @@ project(BirdBox)
 set(This BirdBox)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 # Chemin de fichier
 set(HEADERS_DIR "hrc")
@@ -27,6 +26,8 @@ set(Sources "main.cpp"
     "${SOURCES_DIR}/Image.cpp"
     "${SOURCES_DIR}/Bird.cpp"
     "${SOURCES_DIR}/Matrix.cpp"
+    "${SOURCES_DIR}/Couleur.cpp"
+    "${SOURCES_DIR}/MultilayerPerceptron.cpp"
 )
 
 set(Headers
@@ -35,6 +36,8 @@ set(Headers
     "${HEADERS_DIR}/Image.hpp"
     "${HEADERS_DIR}/Bird.hpp"
     "${HEADERS_DIR}/Matrix.hpp"
+    "${HEADERS_DIR}/Couleur.hpp"
+    "${HEADERS_DIR}/MultilayerPerceptron.hpp"
 )
 
 # Exécutable

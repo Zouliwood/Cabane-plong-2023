@@ -5,12 +5,16 @@
 
 using namespace cv;
 
+using namespace std;
+
 class Couleur {
 
 public:
 
     int histogramme(const Mat &src);
+
     vector<Vec3b> listcolours(Mat imc);
+
 };
 
-#endif 
+#endif //BIRDBOX_COULEUR

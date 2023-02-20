@@ -36,7 +36,7 @@ TEST_P(MatrixValuesTest, Multiplication) {
     Matrix expected(MATRIX_SIZE, MATRIX_SIZE, GetParam() * GetParam() * MATRIX_SIZE);
 
     Matrix init(MATRIX_SIZE, MATRIX_SIZE, GetParam());
-    Matrix &result = init * init;
+    Matrix result = init * init;
 
     EXPECT_EQ(expected, result);
 }
@@ -45,7 +45,7 @@ TEST_P(MatrixValuesTest, Addition) {
     Matrix expected(MATRIX_SIZE, MATRIX_SIZE, GetParam() * 2);
 
     Matrix init(MATRIX_SIZE, MATRIX_SIZE, GetParam());
-    Matrix &result = init + init;
+    Matrix result = init + init;
 
     EXPECT_EQ(expected, result);
 }
@@ -54,7 +54,7 @@ TEST_P(MatrixValuesTest, Transpose) {
     Matrix init(MATRIX_SIZE, MATRIX_SIZE * 2, GetParam());
     Matrix expected(MATRIX_SIZE * 2, MATRIX_SIZE, GetParam());
 
-    EXPECT_TRUE(init.transpose() == expected);
+    EXPECT_EQ(init.transpose(), expected);
 }
 
 TEST_P(MatrixValuesTest, ApplyFunction) {
@@ -65,27 +65,27 @@ TEST_P(MatrixValuesTest, ApplyFunction) {
         return a * 2;
     };
 
-    EXPECT_TRUE(init.apply(fun) == expected);
+    EXPECT_EQ(init.apply(fun), expected);
 }
 
 TEST_P(MatrixValuesTest, MultiplicationScalair) {
     Matrix init(MATRIX_SIZE, MATRIX_SIZE, 1);
     Matrix expected(MATRIX_SIZE, MATRIX_SIZE, GetParam());
 
-    EXPECT_TRUE(init * GetParam() == expected);
+    EXPECT_EQ(init * GetParam(), expected);
 }
 
 TEST_P(MatrixValuesTest, Substraction) {
     Matrix init(MATRIX_SIZE, MATRIX_SIZE, GetParam());
     Matrix expected(MATRIX_SIZE, MATRIX_SIZE);
 
-    EXPECT_TRUE(init - init == expected);
+    EXPECT_EQ(init - init, expected);
 }
 
 TEST_P(MatrixValuesTest, EqualityOperator) {
     Matrix init(MATRIX_SIZE, MATRIX_SIZE, GetParam());
 
-    EXPECT_TRUE(init == init);
+    EXPECT_EQ(init, init);
 }
 
 TEST_P(MatrixValuesTest, DifferenceOperator) {

@@ -13,6 +13,8 @@ set(Sources
     "${SOURCES_TEST_DIR}/Image.cpp"
     "${SOURCES_TEST_DIR}/Bird.cpp"
     "${SOURCES_TEST_DIR}/Matrix.cpp"
+    "${SOURCES_TEST_DIR}/Couleur.cpp"
+    "${SOURCES_TEST_DIR}/MultilayerPerceptron.cpp"
 )
 
 set(Headers
@@ -21,6 +23,8 @@ set(Headers
     "${HEADERS_TEST_DIR}/Image.hpp"
     "${HEADERS_TEST_DIR}/Bird.hpp"
     "${HEADERS_TEST_DIR}/Matrix.hpp"
+    "${HEADERS_TEST_DIR}/Couleur.hpp"
+    "${HEADERS_TEST_DIR}/MultilayerPerceptron.hpp"
 )
 
 # Exécutable

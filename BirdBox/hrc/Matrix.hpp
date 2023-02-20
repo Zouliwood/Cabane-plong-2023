@@ -12,7 +12,7 @@ public:
 
     explicit Matrix(size_t x = 1, size_t y = 1, int def = 0);
 
-    Matrix(const Matrix &mat) = delete;
+    Matrix(const Matrix &mat) = default;
 
     ~Matrix() = default;
 
@@ -24,19 +24,19 @@ public:
 
     bool operator!=(const Matrix &mat) const;
 
-    Matrix &operator+(const Matrix &mat) const;
+    Matrix operator+(const Matrix &mat) const;
 
-    Matrix &operator-(const Matrix &mat) const;
+    Matrix operator-(const Matrix &mat) const;
 
-    Matrix &operator*(const Matrix &mat) const;
+    Matrix operator*(const Matrix &mat) const;
 
-    friend Matrix &operator*(const Matrix &mat, int scalaire);
+    friend Matrix operator*(const Matrix &mat, double scalaire);
 
-    friend Matrix &operator*(int scalaire, const Matrix &mat);
+    friend Matrix operator*(double scalaire, const Matrix &mat);
 
-    [[nodiscard]] Matrix &transpose() const;
+    [[nodiscard]] Matrix transpose() const;
 
-    Matrix &apply(double (*func)(double)) const;
+    Matrix apply(double (*func)(double)) const;
 
     [[nodiscard]] size_t getX() const;
 
@@ -50,5 +50,7 @@ private:
 
     friend ostream &operator<<(ostream &out, Matrix const &matrix);
 };
+
+typedef Matrix Perceptron;
 
 #endif //BIRDBOX_MATRIX_HPP

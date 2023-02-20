@@ -1,7 +1,6 @@
 #include "../hrc/Matrix.hpp"
 
 ostream &operator<<(ostream &out, const Matrix &matrix) {
-
     out << " Matrice : " << endl;
 
     for (const auto &i: matrix.data) {
@@ -32,11 +31,11 @@ const vector<double> &Matrix::operator[](int i) const {
     return data[i];
 }
 
-Matrix &Matrix::operator+(const Matrix &mat) const {
+Matrix Matrix::operator+(const Matrix &mat) const {
     if (this->x != mat.x || this->y != mat.y)
         throw invalid_argument("Incompatible matrix dimensions");
 
-    Matrix &res = *new Matrix(this->x, this->y);
+    Matrix res(this->x, this->y);
     for (int i = 0; i < this->x; ++i) {
         for (int j = 0; j < this->y; ++j) {
             res[i][j] = this->data[i][j] + mat[i][j];
@@ -46,11 +45,11 @@ Matrix &Matrix::operator+(const Matrix &mat) const {
     return res;
 }
 
-Matrix &Matrix::operator-(const Matrix &mat) const {
+Matrix Matrix::operator-(const Matrix &mat) const {
     if (this->x != mat.x || this->y != mat.y)
         throw invalid_argument("Incompatible matrix dimensions");
 
-    Matrix &res = *new Matrix(this->x, this->y);
+    Matrix res(this->x, this->y);
     for (int i = 0; i < this->x; ++i) {
         for (int j = 0; j < this->y; ++j) {
             res[i][j] = this->data[i][j] - mat[i][j];
@@ -60,11 +59,11 @@ Matrix &Matrix::operator-(const Matrix &mat) const {
     return res;
 }
 
-Matrix &Matrix::operator*(const Matrix &mat) const {
+Matrix Matrix::operator*(const Matrix &mat) const {
     if (this->y != mat.x)
         throw invalid_argument("Incompatible matrix dimensions");
 
-    Matrix &res = *new Matrix(x, mat.y);
+    Matrix res(x, mat.y);
     for (int i = 0; i < this->x; ++i) {
         for (int j = 0; j < mat.y; ++j) {
             double line = 0;
@@ -78,25 +77,23 @@ Matrix &Matrix::operator*(const Matrix &mat) const {
     return res;
 }
 
-Matrix &operator*(const Matrix &mat, int scalaire) {
-    Matrix &res = *new Matrix(mat.x, mat.y);
+Matrix operator*(const Matrix &mat, double scalaire) {
+    Matrix res(mat.x, mat.y);
     for (int i = 0; i < mat.x; ++i) {
         for (int j = 0; j < mat.y; ++j) {
             res[i][j] = mat[i][j] * scalaire;
         }
-
     }
 
     return res;
 }
 
-Matrix &operator*(int scalaire, const Matrix &mat) {
-    Matrix &res = *new Matrix(mat.x, mat.y);
+Matrix operator*(double scalaire, const Matrix &mat) {
+    Matrix res(mat.x, mat.y);
     for (int i = 0; i < mat.x; ++i) {
         for (int j = 0; j < mat.y; ++j) {
             res[i][j] = mat[i][j] * scalaire;
         }
-
     }
 
     return res;
@@ -130,9 +127,13 @@ bool Matrix::operator==(const Matrix &mat) const {
     return true;
 }
 
-Matrix &Matrix::transpose() const {
+/**
+ * Calcule la transposition de la matrice.
+ * @return Une nouvelle matrice qui a été transposée.
+ */
+Matrix Matrix::transpose() const {
 
-    Matrix &res = *new Matrix(this->y, this->x);
+    Matrix res(this->y, this->x);
     for (int i = 0; i < this->x; ++i) {
         for (int j = 0; j < this->y; ++j) {
             res[j][i] = this->data[i][j];
@@ -142,9 +143,14 @@ Matrix &Matrix::transpose() const {
     return res;
 }
 
-Matrix &Matrix::apply(double (*func)(double)) const {
+/**
+ * Applique une fonction à l'ensemble des éléments composant la matrice.
+ * @param   func La fonction à appliquer.
+ * @return       Une nouvelle matrice où l'on a appliqué la fonction.
+ */
+Matrix Matrix::apply(double (*func)(double)) const {
 
-    Matrix &res = *new Matrix(this->x, this->y);
+    Matrix res(this->x, this->y);
     for (int i = 0; i < this->x; ++i) {
         for (int j = 0; j < this->y; ++j) {
             res[i][j] = func(this->data[i][j]);
