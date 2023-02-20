@@ -7,10 +7,13 @@ using namespace cv;
 
 class Couleur {
 
-public:
+    public:
 
-    int histogramme(const Mat &src);
-    vector<Vec3b> listcolours(Mat imc);
+        static Mat histogramme(const Mat &src,bool img);
+        char * idBird(Mat img_src);
+        static double HistComp(Mat src, Mat comp);
+        static Mat grapheHist(Mat histimg,Mat b_hist, Mat g_hist, Mat r_hist);
+        
 };
 
 #endif 

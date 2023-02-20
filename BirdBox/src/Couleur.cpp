@@ -1,22 +1,19 @@
-#include "hrc/Couleur.hpp"
+#include "../hrc/Couleur.hpp"
 #include <functional>
 #include <thread>
 
 using namespace std;
 
-/*
-affichage des histogrammes (rgb)
-*/
+Mat Couleur::histogramme(const Mat &src, bool img) {
 
-
-int Couleur::histogramme(const Mat &src) {
-
-    if (src.empty()) {
-        return EXIT_FAILURE;
-    }
+    /*if (src.empty()) {
+        return;
+    }*/
 
     vector<Mat> bgr_planes;
     split(src, bgr_planes);       //separation en rgb
+
+
 
 //paramètres pour les histogrammes
     int histSize = 256;
@@ -26,6 +23,7 @@ int Couleur::histogramme(const Mat &src) {
 
 //calcul des histogrammes
     Mat b_hist, g_hist, r_hist;
+
     calcHist(&bgr_planes[0], 1, nullptr, Mat(), b_hist, 1, &histSize, histRange, uniform, accumulate);
     calcHist(&bgr_planes[1], 1, nullptr, Mat(), g_hist, 1, &histSize, histRange, uniform, accumulate);
     calcHist(&bgr_planes[2], 1, nullptr, Mat(), r_hist, 1, &histSize, histRange, uniform, accumulate);
@@ -39,40 +37,67 @@ int Couleur::histogramme(const Mat &src) {
     normalize(g_hist, g_hist, 0, histImage.rows, NORM_MINMAX, -1, Mat());
     normalize(r_hist, r_hist, 0, histImage.rows, NORM_MINMAX, -1, Mat());
 
-//représentation des histogrammes 
-    for (int i = 1; i < histSize; i++) {
-        line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(b_hist.at<float>(i - 1))),
-             Point(bin_w * (i), hist_h - cvRound(b_hist.at<float>(i))),
-             Scalar(255, 0, 0), 2, 8, 0);
-        line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(g_hist.at<float>(i - 1))),
-             Point(bin_w * (i), hist_h - cvRound(g_hist.at<float>(i))),
-             Scalar(0, 255, 0), 2, 8, 0);
-        line(histImage, Point(bin_w * (i - 1), hist_h - cvRound(r_hist.at<float>(i - 1))),
-             Point(bin_w * (i), hist_h - cvRound(r_hist.at<float>(i))),
-             Scalar(0, 0, 255), 2, 8, 0);
+    if(img){
+        histImage= grapheHist(histImage,b_hist, g_hist,r_hist);
     }
-
-    imshow("Source", src);
+    
+    //imshow("Source", src);
     imshow("Histogrammes", histImage);
     waitKey();
-    return EXIT_SUCCESS;
+    return histImage;
 
 }
 
+Mat Couleur::grapheHist(Mat histImage,Mat b_hist, Mat g_hist, Mat r_hist){
+//représentation des histogrammes 
+    int bin_w = cvRound((double) 512 / 256);
 
-vector<Vec3b> Couleur::listcolours(Mat imc) {
-    vector<Vec3b> colors;
-
-    for (int y = 0; y < imc.rows; y++) {
-        for (int x = 0; x < imc.cols; x++) {
-
-            Vec3b c = imc.at<Vec3b>(Point(x, y));
-
-            colors.push_back(c);
-        }
-
+    for (int i = 1; i < 256; i++) {
+        line(histImage, Point(bin_w * (i - 1), 400 - cvRound(b_hist.at<float>(i - 1))),
+             Point(bin_w * (i), 400 - cvRound(b_hist.at<float>(i))),
+             Scalar(255, 0, 0), 2, 8, 0);
+        line(histImage, Point(bin_w * (i - 1), 400 - cvRound(g_hist.at<float>(i - 1))),
+             Point(bin_w * (i), 400 - cvRound(g_hist.at<float>(i))),
+             Scalar(0, 255, 0), 2, 8, 0);
+        line(histImage, Point(bin_w * (i - 1), 400 - cvRound(r_hist.at<float>(i - 1))),
+             Point(bin_w * (i), 400 - cvRound(r_hist.at<float>(i))),
+             Scalar(0, 0, 255), 2, 8, 0);
     }
 
-    return colors;
+    return histImage;
+}
 
+char * Couleur::idBird(Mat img_src){
+    
+}
+
+
+double Couleur::HistComp(Mat img_src, Mat img_comp){
+
+
+    
+    Mat hsv_src, hsv_comp;
+    cvtColor( img_src, hsv_src, COLOR_BGR2HSV );
+    cvtColor( img_comp, hsv_comp, COLOR_BGR2HSV );
+
+    int h_bins = 50, s_bins = 60;
+    int histSize[] = { h_bins, s_bins };
+    float h_ranges[] = { 0, 180 };
+    float s_ranges[] = { 0, 256 };
+    const float* ranges[] = { h_ranges, s_ranges };
+    int channels[] = { 0, 1 };
+    Mat hist_src, hist_comp;
+
+    calcHist( &hsv_src, 1, channels, Mat(), hist_src, 2, histSize, ranges, true, false );
+    normalize( hist_src, hist_src, 0, 1, NORM_MINMAX, -1, Mat() );
+    calcHist( &hsv_comp, 1, channels, Mat(), hist_comp, 2, histSize, ranges, true, false );
+    normalize( hist_comp, hist_comp, 0, 1, NORM_MINMAX, -1, Mat() );
+
+
+    double comp=compareHist( hist_src, hist_comp, 0 )*100;
+
+
+    cout<<"compa: "<< comp<<endl;
+
+    return comp;
 }

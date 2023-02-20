@@ -1,4 +1,5 @@
 #include "hrc/Calcul.hpp"
+#include "hrc/Couleur.hpp"
 
 
 
@@ -10,8 +11,17 @@ int main(int argc, char **argv) {
     float szObject = Calcul::sizeObject(el1, el2);
     cout << "sizeObject: " << szObject << endl;
 
+    Mat el3 = imread("../images/bird.jpg", IMREAD_COLOR);
+    Mat el4 = imread("../images/corbeau.jpg", IMREAD_COLOR);
+
+    //imshow("Histogrammes", el3);
+
+    double c1= Couleur::HistComp(el3,el4);
+    double c2= Couleur::HistComp(el3,el3);
+
     destroyAllWindows();
 
     return 0;
 
 }
+ 
