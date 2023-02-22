@@ -1,0 +1,9 @@
+image: matimoreyra/opencv
+
+GTest:
+  script:
+    -cd BirdBox
+    -cmake CMakeLists.txt
+    -make
+    -./test/BirdBoxTest
+
