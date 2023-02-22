@@ -3,7 +3,7 @@ project(BirdBox)
 
 set(This BirdBox)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
 
 # Chemin de fichier
 set(HEADERS_DIR "hrc")
