@@ -1,9 +1,12 @@
 image: matimoreyra/opencv
 
+before_script:
+  - pwd
+
 GTest:
   script:
-    -cd BirdBox
-    -cmake CMakeLists.txt
-    -make
-    -./test/BirdBoxTest
+    - cd BirdBox
+    - cmake CMakeLists.txt
+    - make
+    - ./test/BirdBoxTest
 
