@@ -31,6 +31,7 @@ set(Sources "main.cpp"
     "${SOURCES_DIR}/Couleur.cpp"
     "${SOURCES_DIR}/MultilayerPerceptron.cpp"
     "${SOURCES_DIR}/KNearestNeighbors.cpp"
+    "${SOURCES_DIR}/SingletonKNearestNeighbors.cpp"
 )
 
 set(Headers
@@ -42,6 +43,7 @@ set(Headers
     "${HEADERS_DIR}/Couleur.hpp"
     "${HEADERS_DIR}/MultilayerPerceptron.hpp"
     "${HEADERS_DIR}/KNearestNeighbors.hpp"
+    "${HEADERS_DIR}/SingletonKNearestNeighbors.hpp"
 )
 
 # Exécutable

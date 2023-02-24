@@ -4,7 +4,7 @@ set(This BirdBoxTest)
 
 # Fichiers de test
 set(TestSources
-        CalculTest.cpp MatrixTest.cpp)
+        CalculTest.cpp MatrixTest.cpp KNearestNeighborsTest.cpp)
 
 # Sources et Headers
 set(Sources
@@ -16,6 +16,7 @@ set(Sources
     "${SOURCES_TEST_DIR}/Couleur.cpp"
     "${SOURCES_TEST_DIR}/MultilayerPerceptron.cpp"
     "${SOURCES_TEST_DIR}/KNearestNeighbors.cpp"
+    "${SOURCES_TEST_DIR}/SingletonKNearestNeighbors.cpp"
 )
 
 set(Headers
@@ -27,6 +28,7 @@ set(Headers
     "${HEADERS_TEST_DIR}/Couleur.hpp"
     "${HEADERS_TEST_DIR}/MultilayerPerceptron.hpp"
     "${HEADERS_TEST_DIR}/KNearestNeighbors.hpp"
+    "${HEADERS_TEST_DIR}/SingletonKNearestNeighbors.hpp"
 )
 
 # Exécutable

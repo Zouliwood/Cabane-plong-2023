@@ -18,11 +18,11 @@ public:
 
     [[nodiscard]] double getSize() const;
 
-    Vec3b &getColor();
+    [[nodiscard]] Vec3b getColor() const;
 
-    String getName();
+    [[nodiscard]] String getName() const;
 
-    Bird(String name, const Vec3b& color, double size);
+    Bird(const Vec3b& color, double size, String name="unknow");
 
     ~Bird();
 

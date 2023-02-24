@@ -5,12 +5,13 @@
 #include <vector>
 #include "Bird.hpp"
 #include <map>
+#include <stdexcept>
 
 using namespace std;
 
 class KNearestNeighbors {
 
-private:
+public:
 
     struct element {
         unsigned long x{};
@@ -18,29 +19,25 @@ private:
         Bird b;
     };
 
-    static KNearestNeighbors instance;
-
-    vector<element> listBirdEl;
-
-
-    explicit KNearestNeighbors(vector<Bird> listBird);
+    vector<element> getListBirdEl();
 
     ~KNearestNeighbors() = default;
 
-
-    static unsigned long RGBToHexa(Vec3b &rgb);
-
-    static double getDistance(const element &p1, const element &p2);
-
-public:
-
-    static KNearestNeighbors &getInstance();
-
     KNearestNeighbors(const KNearestNeighbors &) = delete;
 
-    String getMostCommonType(vector<Bird> listEl);
+    static String getMostCommonType(const vector<Bird>& listEl);
 
-    [[nodiscard]] vector<Bird> getKNN(Bird b, int K);
+    [[nodiscard]] vector<Bird> getKNN(const Bird& b, int K);
+
+    explicit KNearestNeighbors(const vector<Bird>& listBird);
+
+private:
+
+    vector<element> listBirdEl;
+
+    static unsigned long RGBToHexa(const Vec3b &rgb);
+
+    static double getDistance(const element &p1, const element &p2);
 
 };
 

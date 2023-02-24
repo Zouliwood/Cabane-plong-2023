@@ -1,13 +1,7 @@
-#include <stdexcept>
 #include "../hrc/KNearestNeighbors.hpp"
 
-
-KNearestNeighbors KNearestNeighbors::instance = KNearestNeighbors(vector<Bird>({
-    //TODO: load data
-}));
-
-KNearestNeighbors::KNearestNeighbors(vector<Bird> listBird) {
-    for (auto &bird: listBird) {
+KNearestNeighbors::KNearestNeighbors(const vector<Bird>& listBird) {
+    for (const auto &bird: listBird) {
         this->listBirdEl.push_back((element) {
             .x=RGBToHexa(bird.getColor()),
             .y=bird.getSize(),
@@ -16,8 +10,8 @@ KNearestNeighbors::KNearestNeighbors(vector<Bird> listBird) {
     }
 }
 
-KNearestNeighbors &KNearestNeighbors::getInstance() {
-    return instance;
+vector<KNearestNeighbors::element> KNearestNeighbors::getListBirdEl() {
+    return this->listBirdEl;
 }
 
 /**
@@ -25,7 +19,7 @@ KNearestNeighbors &KNearestNeighbors::getInstance() {
  * @param rgb Objet que l'on souhaite convertir.
  * @return    Une valeur hexadécimale en un long non-signé.
  */
-unsigned long KNearestNeighbors::RGBToHexa(Vec3b &rgb) {
+unsigned long KNearestNeighbors::RGBToHexa(const Vec3b &rgb) {
     return ((rgb[0] & 0xff) << 16) + ((rgb[1] & 0xff) << 8) + (rgb[2] & 0xff);
 }
 
@@ -45,7 +39,7 @@ double KNearestNeighbors::getDistance(const KNearestNeighbors::element &p1, cons
  * @param K Le nombre de voisins que l'on veut récupérer au plus.
  * @return  La liste K éléments les plus proches du point b.
  */
-vector<Bird> KNearestNeighbors::getKNN(Bird b, int K){
+vector<Bird> KNearestNeighbors::getKNN(const Bird& b, int K){
     auto currBird = (element) {
         .x=RGBToHexa(b.getColor()),
         .y=b.getSize(),
@@ -77,7 +71,7 @@ vector<Bird> KNearestNeighbors::getKNN(Bird b, int K){
  * @param listBird La liste dans laquelle on souhaite regarder les éléments les plus fréquents.
  * @return         Le nom de l'élément le plus courant.
  */
-String KNearestNeighbors::getMostCommonType(vector<Bird> listBird){
+String KNearestNeighbors::getMostCommonType(const vector<Bird>& listBird){
     map<String, int> names;
     for (auto &i: listBird) {
         if (names[i.getName()]) names[i.getName()] += 1;
