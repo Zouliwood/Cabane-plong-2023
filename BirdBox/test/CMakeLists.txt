@@ -15,6 +15,7 @@ set(Sources
     "${SOURCES_TEST_DIR}/Matrix.cpp"
     "${SOURCES_TEST_DIR}/Couleur.cpp"
     "${SOURCES_TEST_DIR}/MultilayerPerceptron.cpp"
+    "${SOURCES_TEST_DIR}/KNearestNeighbors.cpp"
 )
 
 set(Headers
@@ -25,6 +26,7 @@ set(Headers
     "${HEADERS_TEST_DIR}/Matrix.hpp"
     "${HEADERS_TEST_DIR}/Couleur.hpp"
     "${HEADERS_TEST_DIR}/MultilayerPerceptron.hpp"
+    "${HEADERS_TEST_DIR}/KNearestNeighbors.hpp"
 )
 
 # Exécutable

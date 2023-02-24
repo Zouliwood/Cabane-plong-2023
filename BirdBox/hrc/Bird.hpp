@@ -10,8 +10,21 @@ class Bird {
 
 private:
 
-    Vec3b color;
+    String name;
     double size;
+    Vec3b color;
+
+public:
+
+    [[nodiscard]] double getSize() const;
+
+    Vec3b &getColor();
+
+    String getName();
+
+    Bird(String name, const Vec3b& color, double size);
+
+    ~Bird();
 
 };
 
