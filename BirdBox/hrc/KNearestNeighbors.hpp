@@ -27,7 +27,9 @@ public:
 
     static String getMostCommonType(const vector<Bird>& listEl);
 
-    [[nodiscard]] vector<Bird> getKNN(const Bird& b, int K);
+    [[nodiscard]] vector<Bird> getKNNDistance(const Bird& b, int K);
+
+    [[nodiscard]] vector<Bird> getKNNWindow(const Bird& b, int K);
 
     explicit KNearestNeighbors(const vector<Bird>& listBird);
 

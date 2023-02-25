@@ -39,7 +39,7 @@ double KNearestNeighbors::getDistance(const KNearestNeighbors::element &p1, cons
  * @param K Le nombre de voisins que l'on veut récupérer au plus.
  * @return  La liste K éléments les plus proches du point b.
  */
-vector<Bird> KNearestNeighbors::getKNN(const Bird& b, int K){
+vector<Bird> KNearestNeighbors::getKNNDistance(const Bird& b, int K){
     auto currBird = (element) {
         .x=RGBToHexa(b.getColor()),
         .y=b.getSize(),
@@ -62,6 +62,47 @@ vector<Bird> KNearestNeighbors::getKNN(const Bird& b, int K){
 
     if (result.empty())
         throw domain_error("Il n'existe pas de voisins.");
+
+    return result;
+}
+
+/**
+ * Permet de récupérer une liste des plus proches éléments en fonction de la taille de la fenêtre.
+ * @param b Point à partir duquel on veut récupérer les plus proches voisins.
+ * @param K Le nombre de voisins que l'on veut récupérer au plus.
+ * @return  La liste d'éléments visibles dans la fenêtre.
+ */
+vector<Bird> KNearestNeighbors::getKNNWindow(const Bird &b, int K) {
+    auto currBird = (element) {
+            .x=RGBToHexa(b.getColor()),
+            .y=b.getSize(),
+            .b=b
+    };
+
+    sort(this->listBirdEl.begin(), this->listBirdEl.end(),
+         [currBird](const element &e1, const element &e2) {
+             return getDistance(e1, currBird) < getDistance(e2, currBird);
+         }
+    );
+
+    vector<element> listKElement;
+    for_each(this->listBirdEl.begin(), this->listBirdEl.end(),
+             [&](KNearestNeighbors::element &e) {
+                 if (listKElement.size() < K)
+                     listKElement.push_back(e);
+             }
+    );
+
+    auto N = double(this->listBirdEl.size());
+    double window = K / (2*N*getDistance(listKElement.back(), currBird));
+
+    vector<Bird> result;
+    for_each(listKElement.begin(), listKElement.end(),
+             [&](KNearestNeighbors::element &e) {
+                 if (getDistance(e, currBird) <= window)
+                     result.push_back(e.b);
+             }
+    );
 
     return result;
 }
