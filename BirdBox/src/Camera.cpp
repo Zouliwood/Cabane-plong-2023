@@ -9,6 +9,27 @@ const Camera &Camera::getUniqueInstance() {
     return instance;
 }
 
+
+Mat Camera::getPic(int n){
+    VideoCapture cap;
+    Mat frame;
+
+    if(!cap.open(0)){
+        return frame;
+    }
+    for(int i=0;i<n;i++){
+          cap >> frame;
+          if(frame.empty()) {
+            break;
+          }
+          imshow("oiseau", frame);
+          cout << imwrite("../images/src_cabane.jpg", frame) << endl;
+          if( waitKey(10) == 27 ) break; // stop capturing by pressing ESC 
+    }
+
+    return frame;
+}
+
 /**
  * Permet de calculer la distance qui sépare la caméra d'un objet
  * @param  pointLeft  Position de l'objet sur l'image gauche
