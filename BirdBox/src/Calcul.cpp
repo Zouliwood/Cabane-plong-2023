@@ -1,5 +1,16 @@
 #include "../hrc/Calcul.hpp"
 
+//TO DO: modifier selon les dimensions réelles de la cabane
+//grillage mur:
+//50 px -> 5cm
+int pxWall=50;
+int distWall=5;
+//grillage sol:
+int pxFloor=45;
+int distFloor=4;
+
+
+
 /**
  * Permet de calculer la distance d'un objet via deux images
  * @param  imageLeft  Image gauche contenant l'objet
@@ -20,6 +31,32 @@ float Calcul::distanceObject(Mat &imageLeft, Mat &imageRight) {
     return (!(positionLeft.x && positionRight.x)) ? -1 :
            Camera::getUniqueInstance().getDepth(positionLeft, positionRight, imageRight);
 }
+
+/**
+ * Permet de calculer la taille réelle d'un objet d'une image
+ * @param  image  Image gauche contenant uniquement l'objet
+ * @return            La taille de l'objet
+ */
+float Calcul::sizeOiseau(Mat &image) {
+    //TO DO: Faire le calcul en considérant la profondeur(oiseau dans différents plans)
+
+    Mat ref = imread("../images/cabane vide.jpg", IMREAD_GRAYSCALE);
+
+    Mat oiseau=image.clone();
+
+    Image::masque(image,ref,oiseau);
+
+    float pxSize= Image::getPxSizeObject(oiseau);
+
+    cout<<"taille sur image: "<< pxSize << endl;
+
+    float taille = pxSize*distWall/pxWall;
+   
+    return taille;
+
+}
+
+
 
 /**
  * Permet de calculer la taille d'un objet (centré) via deux images

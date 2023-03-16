@@ -9,23 +9,26 @@ const Camera &Camera::getUniqueInstance() {
     return instance;
 }
 
+/**
+ * Permet de prendre une photo avec la caméra par défaut
+ * @return            Matrice de la dernière image prise
+ */
+Mat Camera::getPic(){
 
-Mat Camera::getPic(int n){
     VideoCapture cap;
     Mat frame;
 
     if(!cap.open(0)){
         return frame;
     }
-    for(int i=0;i<n;i++){
-          cap >> frame;
-          if(frame.empty()) {
-            break;
-          }
-          imshow("oiseau", frame);
-          cout << imwrite("../images/src_cabane.jpg", frame) << endl;
-          if( waitKey(10) == 27 ) break; // stop capturing by pressing ESC 
+
+    cap >> frame;
+    
+    if(frame.empty()) {
+        return frame;
     }
+
+    imwrite("../images/src_cabane.jpg", frame);
 
     return frame;
 }
@@ -37,6 +40,7 @@ Mat Camera::getPic(int n){
  * @param  imageRight Image droite
  * @return            Distance entre la caméra et l'objet en centimètre
  */
+
 float Camera::getDepth(const Point &pointLeft, const Point &pointRight, const Mat &imageRight) const {
 
     int pxFocale = int((imageRight.cols * 0.5) / tan(alpha * 0.5 * CV_PI / 180.0));

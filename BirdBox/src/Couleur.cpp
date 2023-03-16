@@ -1,9 +1,18 @@
 #include "../hrc/Couleur.hpp"
 #include <functional>
 #include <thread>
+#include <unistd.h>
+
 
 using namespace std;
+using namespace cv;
 
+/**
+ * Création d'un histogramme à partir d'une image
+ * @param   src   Image dont on souhaite avoir l'histogramme
+ * @param   img   Boolean indiquant le souhait de générer une image avec l'histogramme (graphe)
+ * @return              Histogramme
+ */
 Mat Couleur::histogramme(const Mat &src, bool img) {
 
     /*if (src.empty()) {
@@ -48,6 +57,14 @@ Mat Couleur::histogramme(const Mat &src, bool img) {
 
 }
 
+/**
+ * Création d'un graphe à partir d'histogrammes
+ * @param   histImage   Matrice de l'image pour le graphe
+ * @param   b_hist      Histogramme pour les valeur B des RGB
+ * @param   g_hist      Histogramme pour les valeur G des RGB
+ * @param   r_hist      Histogramme pour les valeur R des RGB
+ * @return              Image contenant le graphe
+ */
 Mat Couleur::grapheHist(Mat histImage,Mat b_hist, Mat g_hist, Mat r_hist){
 //représentation des histogrammes 
     int bin_w = cvRound((double) 512 / 256);
@@ -71,7 +88,12 @@ char * Couleur::idBird(Mat img_src){
     
 }
 
-
+/**
+ * Permet de comparer deux histogrammes
+ * @param   img_src    Image source prise dans la cabane
+ * @param   img_comp   Image de référence pour comparer
+ * @return            Taux de ressemblance (en pourcentage)
+ */
 double Couleur::HistComp(Mat img_src, Mat img_comp){
 
 
@@ -100,4 +122,25 @@ double Couleur::HistComp(Mat img_src, Mat img_comp){
     cout<<"compa: "<< comp<<endl;
 
     return comp;
+}
+
+/**
+ * Permet de récupérer toutes les couleurs d'une image
+ * @return            vecteur des valeurs RGB de chaque couleur
+ */
+vector<Vec3b> listcolours(Mat imc){
+    vector<Vec3b> colors;
+
+    for(int y=0;y<imc.rows;y++){
+        for(int x=0;x<imc.cols;x++){
+
+            Vec3b c =imc.at<Vec3b>(Point(x,y));
+            
+            colors.push_back(c);
+        }
+
+    }
+
+    return colors;
+
 }
