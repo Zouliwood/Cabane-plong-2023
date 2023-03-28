@@ -7,6 +7,16 @@
 #include <map>
 #include <stdexcept>
 
+#define EUCLIDEAN 1
+#define MANHATTAN 0
+#define COSINE 3
+
+#define COSINE_NORMALIZED 4
+#define COSINE 3
+#define RGB_NORMALIZED 2
+#define RGB 1
+#define HEX 0
+
 using namespace std;
 
 class KNearestNeighbors {
@@ -14,7 +24,8 @@ class KNearestNeighbors {
 public:
 
     struct element {
-        unsigned long x{};
+        unsigned long xHex{};
+        Vec3b xRGB{};
         double y{};
         Bird b;
     };
@@ -27,9 +38,9 @@ public:
 
     static String getMostCommonType(const vector<Bird>& listEl);
 
-    [[nodiscard]] vector<Bird> getKNNDistance(const Bird& b, int K);
+    [[nodiscard]] vector<Bird> getKNNDistance(const Bird& b, int K, int type = EUCLIDEAN, int typeColor = RGB);
 
-    [[nodiscard]] vector<Bird> getKNNWindow(const Bird& b, int K);
+    [[nodiscard]] vector<Bird> getKNNWindow(const Bird& b, int K, int type = EUCLIDEAN, int typeColor = RGB);
 
     explicit KNearestNeighbors(const vector<Bird>& listBird);
 
@@ -39,8 +50,15 @@ private:
 
     static unsigned long RGBToHexa(const Vec3b &rgb);
 
-    static double getDistance(const element &p1, const element &p2);
+    //static unsigned long RGBTo
 
+    static double getDistanceEuclidean(const element &p1, const element &p2, int type = RGB);
+
+    static double getDistanceManhattan(const element &p1, const element &p2, int type = RGB);
+
+    static double getDistanceCosine(const element &p1, const element &p2, int type = COSINE);
+
+    static double getDistance(const element &p1, const element &p2, int type = EUCLIDEAN, int typeColor = RGB);
 };
 
 
