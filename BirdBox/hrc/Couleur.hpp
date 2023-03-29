@@ -6,6 +6,8 @@
 using namespace cv;
 using namespace std;
 
+using namespace std;
+
 class Couleur {
 
     public:
@@ -17,4 +19,4 @@ class Couleur {
         vector<Vec3b> listcolours(Mat imc);
 };
 
-#endif 
+#endif //BIRDBOX_COULEUR

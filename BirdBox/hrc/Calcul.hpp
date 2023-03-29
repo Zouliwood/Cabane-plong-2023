@@ -3,6 +3,7 @@
 
 #include "Camera.hpp"
 #include "Image.hpp"
+#include "Matrix.hpp"
 
 class Calcul {
 

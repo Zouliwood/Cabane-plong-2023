@@ -45,3 +45,17 @@ FAIT :
 - mettre en place l'infrastructure pour enregistrer les caractéristiques des oiseaux dans une BDD
 - trouver comment comment comparer/mesurer la distance entre deux entrées
 
+
+08/03/2023
+FAIT :
+- début de travail sur le calcul de distance : à confirmer
+- catégorisation knn avec couleur dominante et la taille
+- intégration continue
+
+À FAIRE :
+- attention à la notion de distance utilisée, sourtout pour comparer les couleurs
+- mettre en place une architecture de tests pour essayer facilement différentes approches
+- augmenter la quantité de tests et d'espcèces
+- vérifier le temps d'analyse d'une image sur le RaspberryPi
+
+
