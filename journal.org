@@ -59,3 +59,12 @@ FAIT :
 - vérifier le temps d'analyse d'une image sur le RaspberryPi
 
 
+29/03/2023
+FAIT :
+- distance RGB euclidienne/Manhattan
+- Rpi atteint ses limites : il s'éteint en cas de forte charge.
+À FAIRE :
+- vérifier si libopencv-dev est installé et règle le problème de compilation
+- vérifier la dépendence qui est longue à compiler
+- vérifier si c'est un problème de RAM
+- architecture client-serveur si ça ne marche pas 
