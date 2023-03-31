@@ -62,13 +62,13 @@ TEST_F(KNearestNeighborsTest, ValueWindowEmpty) {
 }
 
 TEST_F(KNearestNeighborsTest, MostCloseValue) {
-    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(Bird(Vec3b(255, 55, 0), 47.5), 1));
+    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(Bird(Vec3b(255, 55, 0), 47.5), 1, EUCLIDEAN, RGB));
 
     EXPECT_EQ(result, "Cockatiel");
 }
 
 TEST_P(KNearestNeighborsTest, MostCommonValue) {
-    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(GetParam(), 5));
+    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(GetParam(), 5, EUCLIDEAN, RGB));
 
     EXPECT_EQ(result, "Columba");
 }
@@ -76,5 +76,5 @@ TEST_P(KNearestNeighborsTest, MostCommonValue) {
 TEST_P(KNearestNeighborsTest, ErrorEmptyField) {
     KNearestNeighbors knn(vector<Bird>{});
 
-    EXPECT_THROW(knn.getMostCommonType(knn.getKNNDistance(GetParam(), 5)), domain_error);
+    EXPECT_THROW(knn.getMostCommonType(knn.getKNNDistance(GetParam(), 5, EUCLIDEAN, RGB)), domain_error);
 }

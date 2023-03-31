@@ -35,17 +35,17 @@ unsigned long KNearestNeighbors::RGBToHexa(const Vec3b &rgb) {
 double KNearestNeighbors::getDistance(const KNearestNeighbors::element &p1, const KNearestNeighbors::element &p2,
                                       int typeDistance, int typeColor) {
 
-    if (typeDistance==COSINE)
+    if (typeDistance == COSINE)
         return getDistanceCosine(p1, p2, typeColor);
-    else if (typeDistance==EUCLIDEAN)
+    else if (typeDistance == EUCLIDEAN)
         return getDistanceEuclidean(p1, p2, typeColor);
-    else if (typeDistance==MANHATTAN)
+    else /*if (typeDistance==MANHATTAN)*/
         return getDistanceManhattan(p1, p2, typeColor);
 
 }
 
 double KNearestNeighbors::getDistanceCosine(const KNearestNeighbors::element &p1,
-                                            const KNearestNeighbors::element &p2, int type){
+                                            const KNearestNeighbors::element &p2, int type) {
 
     double size = pow(p2.y - p1.y, 2);
     double magnitudep1 = sqrt(pow(p1.xRGB[0], 2) + pow(p1.xRGB[1], 2) + pow(p1.xRGB[2], 2));
@@ -56,12 +56,12 @@ double KNearestNeighbors::getDistanceCosine(const KNearestNeighbors::element &p1
         double colorP1 = p1.xRGB[0] + p1.xRGB[1] + p1.xRGB[2];
         double colorP2 = p2.xRGB[0] + p2.xRGB[1] + p2.xRGB[2];
         cosineSimilarity = (p1.xRGB[0] * p2.xRGB[0] + p1.xRGB[1] * p2.xRGB[1] + p1.xRGB[2] * p2.xRGB[2]) /
-                                  ((magnitudep1 / colorP1) * (magnitudep2 / colorP2));
+                           ((magnitudep1 / colorP1) * (magnitudep2 / colorP2));
 
     } else if (type == COSINE) {
 
         cosineSimilarity = (p1.xRGB[0] * p2.xRGB[0] + p1.xRGB[1] * p2.xRGB[1] + p1.xRGB[2] * p2.xRGB[2]) /
-                                  (magnitudep1 * magnitudep2);
+                           (magnitudep1 * magnitudep2);
 
     }
     return sqrt((1 - cosineSimilarity) + size);
@@ -86,7 +86,7 @@ double KNearestNeighbors::getDistanceEuclidean(const KNearestNeighbors::element 
             resNor += pow(normalizedP2[i] - normalizedP1[i], 2);
 
         return resNor;
-    } else if (type == RGB) {
+    } else /*if (type == RGB) */{
         double res = size;
         for (int i = 0; i < 3; ++i)
             res += pow(p2.xRGB[i] - p1.xRGB[i], 2);
@@ -113,7 +113,7 @@ double KNearestNeighbors::getDistanceManhattan(const KNearestNeighbors::element 
             res += fabs(normalized_p2[i] - normalized_p1[i]);
 
         return sqrt(res);
-    } else if (type == RGB) {
+    } else /*if (type == RGB) */{
         double res = size;
         for (int i = 0; i < 3; ++i)
             res += fabs(p2.xRGB[i] - p1.xRGB[i]);
