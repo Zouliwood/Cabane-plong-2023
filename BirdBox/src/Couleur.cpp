@@ -144,3 +144,37 @@ vector<Vec3b> listcolours(Mat imc){
     return colors;
 
 }
+
+struct Vec3bComparator{
+    bool operator()(const Vec3b& a, const Vec3b& b) const
+    {
+        return tie(a[0], a[1], a[2]) < tie(b[0], b[1], b[2]);
+    }
+};
+
+
+Vec3b Couleur::MostFrequentColor(Mat image){
+    map<Vec3b, int,Vec3bComparator> color_freq;
+
+     for (int i=0;i<image.cols;i++){
+        for (int j=0;j<image.cols;j++){
+            Vec3b pixel = image.at<cv::Vec3b>(j, i);
+            color_freq[pixel]++;
+        }
+    }
+
+    // Find the color with the highest frequency count
+    Vec3b most_frequent_color;
+    int max_freq = 0;
+
+    for (auto const& element : color_freq) {
+
+        if (element.second> max_freq){
+            most_frequent_color = element.first;
+            max_freq = element.second;
+        }
+    }
+
+    return most_frequent_color;
+
+}

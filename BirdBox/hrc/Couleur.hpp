@@ -6,8 +6,6 @@
 using namespace cv;
 using namespace std;
 
-using namespace std;
-
 class Couleur {
 
     public:
@@ -17,6 +15,7 @@ class Couleur {
         static double HistComp(Mat src, Mat comp);
         static Mat grapheHist(Mat histimg,Mat b_hist, Mat g_hist, Mat r_hist);
         vector<Vec3b> listcolours(Mat imc);
+        static Vec3b MostFrequentColor(Mat image);
 };
 
 #endif //BIRDBOX_COULEUR
