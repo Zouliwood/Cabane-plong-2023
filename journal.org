@@ -68,3 +68,18 @@ FAIT :
 - vérifier la dépendence qui est longue à compiler
 - vérifier si c'est un problème de RAM
 - architecture client-serveur si ça ne marche pas 
+
+19/04/2023
+FAIT : 
+- réinstallation Rpi avec openCV : OK
+- fond nettoyé avant de détecter les couleurs
+À FAIRE :
+- ajouter au moins un nouveau critère : 
+  + couleur non dominante
+  + détection de parties du corps
+  + ...
+- mettre en œuvre concrètement : 
+  + sur un flux vidéo (en direct ou non)
+  + ou avec des images d'oiseaux imprimés 
+- être clair sur les limites du projet : dans quelles conditions ça marche,
+  sur combien d'oiseaux, sur quelle machine (laptop ou raspberry), combien d'images par seconde … ?
