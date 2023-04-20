@@ -157,7 +157,7 @@ Vec3b Couleur::MostFrequentColor(Mat image){
     map<Vec3b, int,Vec3bComparator> color_freq;
 
      for (int i=0;i<image.cols;i++){
-        for (int j=0;j<image.cols;j++){
+        for (int j=0;j<image.rows;j++){
             Vec3b pixel = image.at<cv::Vec3b>(j, i);
             color_freq[pixel]++;
         }

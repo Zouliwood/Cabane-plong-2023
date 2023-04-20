@@ -33,7 +33,9 @@ public:
 
 private:
 
-    vector<element> listBirdEl;
+    vector<element> listBirdEl;     
+
+        
 
     static unsigned long RGBToHexa(const Vec3b &rgb);
 

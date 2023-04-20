@@ -38,7 +38,7 @@ void Image::run(const Mat &image, function<void(int, int, int)> &&lambda, int ra
  * @param rayon  Dimensions du calque permettant de calculer l'érosion et la dilatation
  */
 void Image::morphGradient(const Mat &image, Mat &result, int rayon) {
-    Mat img_erosion = Mat::zeros(image.size(), image.type()), img_dilatation = Mat::zeros(image.size(), image.type());
+    Mat image_erosion = Mat::zeros(image.size(), image.type()), image_dilatation = Mat::zeros(image.size(), image.type());
 
     auto exp = [&](int i, int j, int rayon) mutable {
         Mat frag = image(Range(i - rayon, i + rayon), Range(j - rayon, j + rayon));
@@ -46,13 +46,13 @@ void Image::morphGradient(const Mat &image, Mat &result, int rayon) {
         Point minLoc, maxLoc;
         minMaxLoc(frag, &minVal, &maxVal, &minLoc, &maxLoc);
 
-        img_erosion.at<uchar>(i, j) = (int) minVal;
-        img_dilatation.at<uchar>(i, j) = (int) maxVal;
+        image_erosion.at<uchar>(i, j) = (int) minVal;
+        image_dilatation.at<uchar>(i, j) = (int) maxVal;
     };
 
     run(image, exp, rayon);
 
-    result = img_dilatation - img_erosion;
+    result = image_dilatation - image_erosion;
 }
 
 /**
@@ -73,6 +73,48 @@ void Image::masque(const Mat &image, const Mat &background, Mat &result, int seu
 }
 
 /**
+ * Même principe que masque, mais pour des images en couleur
+ * @param image      Image contenant l'objet à isoler
+ * @param background Image de référence
+ * @param result     Objet sur lequel la fonction doit travailler
+ * @param seuil      Le seuil permettant de délimiter la marge d'erreur
+ */
+void Image::masquecolor(const Mat &image, const Mat &background, Mat &result, int seuil) {
+    for (int i=0;i<image.rows;i++){
+        for (int j=0;j<image.cols;j++){
+            if (norm(background.at<Vec3b>(i, j) - image.at<Vec3b>(i, j)) < seuil)
+                result.at<Vec3b>(i, j) = 0;
+        }
+    }
+}
+
+/**
+ * Rogne une image afin de conserver la différence avec une référence
+ * @param image      Image contenant l'objet à isoler
+ * @param background Image de référence
+ * @param result     Objet sur lequel la fonction doit travailler
+ */
+void Image::cropImage(Mat &image){
+
+    Mat grayImg;
+    cvtColor(image, grayImg, COLOR_BGR2GRAY);
+
+    // Trouver les coordonnées des pixels non nuls
+    vector<Point> nonZeroPoints;
+    findNonZero(grayImg, nonZeroPoints);
+
+    // Calculer le rectangle de la zone à rogner
+    Rect boundingRect = cv::boundingRect(nonZeroPoints);
+
+    Mat croppedImg = image(boundingRect);
+
+    
+    image = croppedImg;
+
+}
+
+
+/**
  * Permet de placer un point dans une image
  * @param image Image où l'on veut placer le point
  * @param point Position du point
@@ -89,7 +131,7 @@ void Image::drawCross(Mat &image, Point &point, int rayon) {
 }
 
 /**
- * Permet d'obtenir les bordures d'objets présents su une image
+ * Permet d'obtenir les bordures d'objets présents sur une image
  * @param  masque Image contenant les objets
  * @return        Liste de bordures d'objets
  */

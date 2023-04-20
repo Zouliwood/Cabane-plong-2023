@@ -22,6 +22,8 @@ public:
     static void morphGradient(const Mat &image, Mat &result, int rayon = 5);
 
     static void masque(const Mat &image, const Mat &background, Mat &result, int seuil = 5);
+    static void masquecolor(const Mat &image, const Mat &background, Mat &result, int seuil=5); 
+    static void cropImage( Mat &image);
 
     static void drawCross(Mat &image, Point &point, int rayon = 10);
 
