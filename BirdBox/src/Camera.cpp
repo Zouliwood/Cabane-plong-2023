@@ -18,7 +18,7 @@ Mat Camera::getPic(){
     VideoCapture cap;
     Mat frame;
 
-    if(!cap.open(0)){
+    if(!cap.isOpened()){
         return frame;
     }
 
@@ -30,6 +30,7 @@ Mat Camera::getPic(){
 
     imwrite("../images/src_cabane.jpg", frame);
 
+    cap.release();
     return frame;
 }
 
