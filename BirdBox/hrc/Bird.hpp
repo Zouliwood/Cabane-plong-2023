@@ -24,7 +24,7 @@ public:
 
     [[nodiscard]] String getName() const;
 
-    Bird(const Vec3b& color, double size, String name="unknow");
+    Bird(Vec3b color[NB_COLOR], double size, String name="unknow");
 
     ~Bird();
 
