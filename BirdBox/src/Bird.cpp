@@ -5,7 +5,7 @@ double Bird::getSize() const {
     return this->size;
 }
 
-Vec3b Bird::getColor() const{
+const Vec3b *Bird::getColor() const {
     return this->color;
 }
 

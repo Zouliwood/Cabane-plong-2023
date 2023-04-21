@@ -17,6 +17,8 @@
 #define RGB 1
 #define HEX 0
 
+#define NB_COLOR 2
+
 using namespace std;
 
 class KNearestNeighbors {
@@ -25,7 +27,7 @@ public:
 
     struct element {
         unsigned long xHex{};
-        Vec3b xRGB{};
+        const Vec<uchar, 3>* xRGB;
         double y{};
         Bird b;
     };
