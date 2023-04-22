@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
 
     //test caméra
 
-    Mat camera=Camera::getPic();
+    Mat camera=Camera::getPic("../images/src_cabane.jpg");
 
     //test taille 
 

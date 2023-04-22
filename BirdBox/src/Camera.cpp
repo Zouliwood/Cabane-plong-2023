@@ -13,22 +13,24 @@ const Camera &Camera::getUniqueInstance() {
  * Permet de prendre une photo avec la caméra par défaut
  * @return            Matrice de la dernière image prise
  */
-Mat Camera::getPic(){
+Mat Camera::getPic(String s){
 
     VideoCapture cap;
     Mat frame;
 
-    if(!cap.isOpened()){
+    if(!cap.open(0)){
         return frame;
     }
+
 
     cap >> frame;
     
     if(frame.empty()) {
+        cout << "empty " << endl;
         return frame;
     }
 
-    imwrite("../images/src_cabane.jpg", frame);
+    imwrite(s, frame);
 
     cap.release();
     return frame;

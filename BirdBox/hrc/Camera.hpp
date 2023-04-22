@@ -27,7 +27,7 @@ public:
 
     Camera(const Camera &) = delete;
 
-    static Mat getPic();
+    static Mat getPic(String s);
 
     static const Camera &getUniqueInstance();
 
