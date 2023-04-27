@@ -10,6 +10,14 @@ KNearestNeighbors::KNearestNeighbors(const vector<Bird>& listBird) {
     }
 }
 
+void KNearestNeighbors::addNeighbors(const Bird &bird){
+    this->listBirdEl.push_back((element) {
+            .x=RGBToHexa(bird.getColor()),
+            .y=bird.getSize(),
+            .b=bird
+    });
+}
+
 vector<KNearestNeighbors::element> KNearestNeighbors::getListBirdEl() {
     return this->listBirdEl;
 }

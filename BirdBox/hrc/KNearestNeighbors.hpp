@@ -25,6 +25,8 @@ public:
 
     KNearestNeighbors(const KNearestNeighbors &) = delete;
 
+    void addNeighbors(const Bird &bird);
+
     static String getMostCommonType(const vector<Bird>& listEl);
 
     [[nodiscard]] vector<Bird> getKNN(const Bird& b, int K);

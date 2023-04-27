@@ -66,7 +66,14 @@ int main(int argc, char **argv) {
     
     vector<Bird> voisins = knn.getKNN(b, 1);
 
+    b.setName(voisins.at(0).getName());
+
+    knn.addNeighbors(b);
+
+
     cout << "espèce " << voisins.at(0).getName() << endl;
+
+    
 
     return 0;
 
