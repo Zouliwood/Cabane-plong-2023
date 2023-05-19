@@ -12,13 +12,17 @@ using namespace cv;
 int main(int argc, char **argv) {
 
    while(1){
+        cout << "Photo Cabane vide";
+        cin.ignore();
         Mat ref=Camera::getPic("../images/src_cabane.jpg");
-        sleep(5);
+        cout << "Photo Oiseau";
+        cin.ignore();
         Mat oiseau=Camera::getPic("../images/oiseau.jpg");
+
+        
 
         Mat t = Image::msq( oiseau,  ref);
 
-        //Mat croppedImage= Image::cropImg(t,oiseau);
 
         vector<vector<Point>> contours;
         vector<Vec4i> hierarchy;
@@ -50,6 +54,7 @@ int main(int argc, char **argv) {
         Mat croppedImage = image_cpy(bdRect);
 
         imwrite("../images/cropped_image.jpg", croppedImage);
+        cvtColor(croppedImage, croppedImage, COLOR_BGR2RGB);
 
         Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
 
@@ -60,14 +65,10 @@ int main(int argc, char **argv) {
         Bird b(domColor,sizeBird,"unknown");
 
 
-        vector<Bird> listb{Bird(Vec3b(255, 55, 0), 45, "Cockatiel"),
-                Bird(Vec3b(255, 55, 0), 50, "Triton cockatoo"),
-                Bird(Vec3b(255, 0, 0), 15, "Gouldian finch"),
+        vector<Bird> listb{
                 Bird(Vec3b(86, 178, 233), 16, "Mountain bluebird"),
                 Bird(Vec3b(201, 162, 57), 13, "Robin"),
-                Bird(Vec3b(225, 225, 51), 13, "atlantic canary"),
-                Bird(Vec3b(65, 105, 225), 25, "Blue Jay"),
-                Bird(Vec3b(255, 245, 250), 35, "Columba")};
+                Bird(Vec3b(225, 225, 51), 13, "atlantic canary")};
             
         
         KNearestNeighbors knn(listb);

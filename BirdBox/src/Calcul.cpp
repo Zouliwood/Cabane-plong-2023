@@ -41,12 +41,8 @@ float Calcul::distanceObject(Mat &imageLeft, Mat &imageRight) {
  */
 float Calcul::sizeOiseau(Mat &image) {
 
-    // Mat ref = imread("../images/A.jpg", IMREAD_GRAYSCALE);
     
 
-    // Mat oiseau=imread("../images/contours_none_image1.jpg", IMREAD_GRAYSCALE);
-
-    //Mat img_color = imread("../images/idkatthispoint.jpg", IMREAD_COLOR);
     Mat img_gray;
     cvtColor(image, img_gray, COLOR_BGR2GRAY);
     Mat blurred;
@@ -55,9 +51,7 @@ float Calcul::sizeOiseau(Mat &image) {
     threshold(blurred, thresh, 150, 255, THRESH_BINARY);
     imwrite("../images/binary.jpg", thresh);
 
-    // Image::masque(oiseau,ref,oiseau);
-    // Mat greyMat;
-    // cvtColor(image, greyMat, COLOR_BGR2GRAY);
+    
 
     float pxSize= Image::getPxSizeObject(thresh);                       
 
@@ -68,7 +62,6 @@ float Calcul::sizeOiseau(Mat &image) {
 
     // cout<<"taille sur image: "<< pxSize << endl;
 
-    // float taille = pxSize*distCam*distWall/pxWall;
    
     return taille;
 

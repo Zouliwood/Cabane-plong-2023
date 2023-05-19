@@ -149,7 +149,7 @@ Mat Image::cropImg(Mat &image, Mat &oiseau){
 
 
 void Image::bnry(Mat thresh){
-    Mat img_color = imread("../images/idkatthispoint.jpg", IMREAD_COLOR);
+    Mat img_color = imread("../images/B.jpg", IMREAD_COLOR);
     Mat img_gray;
     cvtColor(img_color, img_gray, COLOR_BGR2GRAY);
     Mat blurred;
@@ -182,8 +182,6 @@ Mat Image::msq(Mat oiseau, Mat ref){
             }
         }
     }
-
-    imwrite("../images/idkatthispoint.jpg", foregroundMask);
 
      Mat blurred;
     GaussianBlur(foregroundMask, blurred, Size(5, 5), 0);
