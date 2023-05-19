@@ -18,38 +18,38 @@ int main(int argc, char **argv) {
 
         Mat t = Image::msq( oiseau,  ref);
 
-        Mat croppedImage= Image::cropImg(t,oiseau);
+        //Mat croppedImage= Image::cropImg(t,oiseau);
 
-        // vector<vector<Point>> contours;
-        // vector<Vec4i> hierarchy;
-        // findContours(t, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+        vector<vector<Point>> contours;
+        vector<Vec4i> hierarchy;
+        findContours(t, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
 
-        // int largestContourIndex = 0;
-        // double largestContourArea = 0.0;
-        // for (int i = 0; i < contours.size(); ++i) {
-        //     double currentContourArea = contourArea(contours[i]);
-        //     if (currentContourArea > largestContourArea) {
-        //         largestContourArea = currentContourArea;
-        //         largestContourIndex = i;
-        //     }
-        // }
+        int largestContourIndex = 0;
+        double largestContourArea = 0.0;
+        for (int i = 0; i < contours.size(); ++i) {
+            double currentContourArea = contourArea(contours[i]);
+            if (currentContourArea > largestContourArea) {
+                largestContourArea = currentContourArea;
+                largestContourIndex = i;
+            }
+        }
 
-        // Mat image_cpy = oiseau.clone();
-        // drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
+        Mat image_cpy = oiseau.clone();
+        drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
     
-        // imwrite("../images/contours_none_image1.jpg", image_cpy);
+        imwrite("../images/image_avec_contours.jpg", image_cpy);
 
 
-        float sizeBird = Calcul::sizeOiseau(croppedImage);
+        float sizeBird = Calcul::sizeOiseau(image_cpy);
         cout << sizeBird <<" cm" << endl;
 
-        // Rect bdRect = boundingRect(contours[largestContourIndex]);
+        Rect bdRect = boundingRect(contours[largestContourIndex]);
 
         
 
-        // Mat croppedImage = image_cpy(bdRect);
+        Mat croppedImage = image_cpy(bdRect);
 
-        // imwrite("../images/cropped_image.jpg", croppedImage);
+        imwrite("../images/cropped_image.jpg", croppedImage);
 
         Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
 
@@ -83,8 +83,8 @@ int main(int argc, char **argv) {
 
    }
 
-    Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
-    Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
+    // Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
+    // Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
 
 
     return 0;

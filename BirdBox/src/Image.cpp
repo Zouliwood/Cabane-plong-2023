@@ -144,13 +144,7 @@ Mat Image::cropImg(Mat &image, Mat &oiseau){
         imwrite("../images/oiseau_avec_contours.jpg", image_cpy);
 
 
-        Rect bdRect = boundingRect(contours[largestContourIndex]);
-
-        Mat croppedImage = image_cpy(bdRect);
-
-        imwrite("../images/cropped_image.jpg", croppedImage);
-
-        return croppedImage;
+        return image_cpy;
 }
 
 
