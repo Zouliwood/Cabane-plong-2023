@@ -82,11 +82,17 @@ void Image::masque(const Mat &image, const Mat &background, Mat &result, int seu
 void Image::masquecolor(const Mat &image, const Mat &background, Mat &result, int seuil) {
     for (int i=0;i<image.rows;i++){
         for (int j=0;j<image.cols;j++){
+           // cout<<"valeur " << norm(background.at<Vec3b>(i, j) - image.at<Vec3b>(i, j))<< endl;
             if (norm(background.at<Vec3b>(i, j) - image.at<Vec3b>(i, j)) < seuil)
                 result.at<Vec3b>(i, j) = 0;
         }
     }
 }
+
+
+
+
+
 
 /**
  * Rogne une image afin de conserver la différence avec une référence
@@ -96,20 +102,126 @@ void Image::masquecolor(const Mat &image, const Mat &background, Mat &result, in
  */
 void Image::cropImage(Mat &image){
 
+    Rect bbox;
     Mat grayImg;
     cvtColor(image, grayImg, COLOR_BGR2GRAY);
+    threshold(grayImg, grayImg, 127, 255, THRESH_BINARY);
+    bbox = boundingRect(grayImg);
+
 
     // Trouver les coordonnées des pixels non nuls
-    vector<Point> nonZeroPoints;
-    findNonZero(grayImg, nonZeroPoints);
+    // vector<Point> nonZeroPoints;
+    // findNonZero(grayImg, nonZeroPoints);
 
     // Calculer le rectangle de la zone à rogner
-    Rect boundingRect = cv::boundingRect(nonZeroPoints);
+    // Rect boundingRect = cv::boundingRect(nonZeroPoints);
 
-    Mat croppedImg = image(boundingRect);
+    Mat croppedImg = image(bbox);
 
-    
     image = croppedImg;
+
+}
+
+Mat Image::cropImg(Mat &image, Mat &oiseau){
+
+    vector<vector<Point>> contours;
+        vector<Vec4i> hierarchy;
+        findContours(image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+
+        int largestContourIndex = 0;
+        double largestContourArea = 0.0;
+        for (int i = 0; i < contours.size(); ++i) {
+            double currentContourArea = contourArea(contours[i]);
+            if (currentContourArea > largestContourArea) {
+                largestContourArea = currentContourArea;
+                largestContourIndex = i;
+            }
+        }
+
+        Mat image_cpy = oiseau.clone();
+        drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
+    
+        imwrite("../images/oiseau_avec_contours.jpg", image_cpy);
+
+
+        Rect bdRect = boundingRect(contours[largestContourIndex]);
+
+        Mat croppedImage = image_cpy(bdRect);
+
+        imwrite("../images/cropped_image.jpg", croppedImage);
+
+        return croppedImage;
+}
+
+
+void Image::bnry(Mat thresh){
+    Mat img_color = imread("../images/idkatthispoint.jpg", IMREAD_COLOR);
+    Mat img_gray;
+    cvtColor(img_color, img_gray, COLOR_BGR2GRAY);
+    Mat blurred;
+    GaussianBlur(img_gray, blurred, Size(5, 5), 0);
+    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    imwrite("../images/binary.jpg", thresh);
+ }
+
+
+Mat Image::msq(Mat oiseau, Mat ref){
+    Mat diffImage;
+    absdiff(ref, oiseau, diffImage);
+
+    Mat foregroundMask = Mat::zeros(diffImage.rows, diffImage.cols, CV_8UC1);
+
+    float thold = 30.0f;
+    float dist;
+
+    for(int j=0; j<diffImage.rows; ++j){
+        for(int i=0; i<diffImage.cols; ++i)
+        {
+            Vec3b pix = diffImage.at<Vec3b>(j,i);
+
+            dist = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+            dist = sqrt(dist);
+
+            if(dist>thold)
+            {
+                foregroundMask.at<unsigned char>(j,i) = 255;
+            }
+        }
+    }
+
+    imwrite("../images/idkatthispoint.jpg", foregroundMask);
+
+     Mat blurred;
+    GaussianBlur(foregroundMask, blurred, Size(5, 5), 0);
+    Mat thresh;
+    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    imwrite("../images/binary.jpg", thresh);
+
+    return thresh;
+}
+
+vector<Point> Image::addContours(Mat thrwdwesh, Mat imagdwede_cpy){
+    Mat thresh;
+    Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
+    Mat image_cpy = oiseau.clone();
+    vector<vector<Point>> contours;
+    vector<Vec4i> hierarchy;
+    findContours(thresh, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+
+        int largestContourIndex = 0;
+        double largestContourArea = 0.0;
+        for (int i = 0; i < contours.size(); ++i) {
+            double currentContourArea = contourArea(contours[i]);
+            if (currentContourArea > largestContourArea) {
+                largestContourArea = currentContourArea;
+                largestContourIndex = i;
+            }
+        }
+
+
+    drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
+    //imwrite("../images/contours_none_image1.jpg", image_cpy);
+    //return contours[largestContourIndex];
 
 }
 
@@ -144,6 +256,13 @@ vector<vector<Point>> Image::getBordures(const Mat &masque) {
          [](const vector<Point> &listPoint1, const vector<Point> &listPoint2) {
              return contourArea(listPoint1, false) < contourArea(listPoint2, false);
          });
+
+    // for(vector<Point> p1: listBordures){
+    //     cout << endl;
+    //     for(Point p2: p1){
+    //         cout << p2 << endl;
+    //     }
+    // }
 
     return listBordures;
 
@@ -185,6 +304,6 @@ float Image::getPxSizeObject(const Mat &masque) {
         Point2f center;
         minEnclosingCircle(largestContour, center, pxObjSize);
     }
-
+    cout << "pxObjSize: "<< pxObjSize *2<< endl;
     return pxObjSize * 2;
 }

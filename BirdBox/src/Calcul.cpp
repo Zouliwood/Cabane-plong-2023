@@ -3,11 +3,13 @@
 //TO DO: modifier selon les dimensions réelles de la cabane
 //grillage mur:
 //50 px -> 5cm
-int pxWall=50;
-int distWall=5;
+int pxWall=55;
+float distWall=2.5;
 //grillage sol:
-int pxFloor=45;
-int distFloor=4;
+int pxFloor=62;
+int distFloor=5;
+//distance oiseau-caméra 
+int distCam= 24;
 
 
 
@@ -38,19 +40,35 @@ float Calcul::distanceObject(Mat &imageLeft, Mat &imageRight) {
  * @return            La taille de l'objet
  */
 float Calcul::sizeOiseau(Mat &image) {
-    //TO DO: Faire le calcul en considérant la profondeur(oiseau dans différents plans)
 
-    Mat ref = imread("../images/cabane vide.jpg", IMREAD_GRAYSCALE);
+    // Mat ref = imread("../images/A.jpg", IMREAD_GRAYSCALE);
+    
 
-    Mat oiseau=image.clone();
+    // Mat oiseau=imread("../images/contours_none_image1.jpg", IMREAD_GRAYSCALE);
 
-    Image::masque(image,ref,oiseau);
+    //Mat img_color = imread("../images/idkatthispoint.jpg", IMREAD_COLOR);
+    Mat img_gray;
+    cvtColor(image, img_gray, COLOR_BGR2GRAY);
+    Mat blurred;
+    GaussianBlur(img_gray, blurred, Size(5, 5), 0);
+    Mat thresh;
+    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    imwrite("../images/binary.jpg", thresh);
 
-    float pxSize= Image::getPxSizeObject(oiseau);
+    // Image::masque(oiseau,ref,oiseau);
+    // Mat greyMat;
+    // cvtColor(image, greyMat, COLOR_BGR2GRAY);
 
-    cout<<"taille sur image: "<< pxSize << endl;
+    float pxSize= Image::getPxSizeObject(thresh);                       
 
-    float taille = pxSize*distWall/pxWall;
+    float pixelSizeInCm=distWall/pxWall;
+    cout << "Pixel size in cm: " << pixelSizeInCm << endl;
+
+    float taille = pxSize * pixelSizeInCm;
+
+    // cout<<"taille sur image: "<< pxSize << endl;
+
+    // float taille = pxSize*distCam*distWall/pxWall;
    
     return taille;
 

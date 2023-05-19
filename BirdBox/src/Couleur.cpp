@@ -153,10 +153,11 @@ struct Vec3bComparator{
 };
 
 
+//TO DO: Tester que la couleur ne fait pas partie de celles dans la ref
 Vec3b Couleur::MostFrequentColor(Mat image){
     map<Vec3b, int,Vec3bComparator> color_freq;
 
-     for (int i=0;i<image.cols;i++){
+    for (int i=0;i<image.cols;i++){
         for (int j=0;j<image.rows;j++){
             Vec3b pixel = image.at<cv::Vec3b>(j, i);
             color_freq[pixel]++;
@@ -169,7 +170,7 @@ Vec3b Couleur::MostFrequentColor(Mat image){
 
     for (auto const& element : color_freq) {
 
-        if (element.second> max_freq){
+        if (element.second> max_freq && element.first != Vec3b{0,255,0}){
             most_frequent_color = element.first;
             max_freq = element.second;
         }

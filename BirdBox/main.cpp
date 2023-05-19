@@ -10,70 +10,82 @@ using namespace cv;
 
 
 int main(int argc, char **argv) {
-   
-    Mat el2 = imread("../images/cabane oiseau 1.jpg", IMREAD_GRAYSCALE);
-    Mat ref = imread("../images/cabane vide.jpg", IMREAD_COLOR);
-    Mat oiseau = imread("../images/cabane oiseau 1.jpg", IMREAD_COLOR);
 
-    Mat el3 = imread("../images/moineau.jpg", IMREAD_COLOR);
-    Mat el4 = imread("../images/corbeau.jpg", IMREAD_COLOR);
+   while(1){
+        Mat ref=Camera::getPic("../images/src_cabane.jpg");
+        sleep(5);
+        Mat oiseau=Camera::getPic("../images/oiseau.jpg");
 
-    //test histogrammes
+        Mat t = Image::msq( oiseau,  ref);
 
+        Mat croppedImage= Image::cropImg(t,oiseau);
 
-    //TODO: fix
-    // double c1= Couleur::HistComp(el3,el4);
-    // double c2= Couleur::HistComp(el3,el3);
+        // vector<vector<Point>> contours;
+        // vector<Vec4i> hierarchy;
+        // findContours(t, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
 
-    //test caméra
+        // int largestContourIndex = 0;
+        // double largestContourArea = 0.0;
+        // for (int i = 0; i < contours.size(); ++i) {
+        //     double currentContourArea = contourArea(contours[i]);
+        //     if (currentContourArea > largestContourArea) {
+        //         largestContourArea = currentContourArea;
+        //         largestContourIndex = i;
+        //     }
+        // }
 
-    Mat camera=Camera::getPic("../images/src_cabane.jpg");
-
-    //test taille 
-
-    float sizeBird = Calcul::sizeOiseau(el2);
-
-    cout << sizeBird <<" cm" << endl;
-
-    //test couleur dominante
-
-    Mat bird=oiseau.clone();
-
-    Image::masquecolor(oiseau,ref,bird,5);
-
-    Image::cropImage(bird);
-    imwrite("../images/src_oiseau.jpg", bird);
-
+        // Mat image_cpy = oiseau.clone();
+        // drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
     
+        // imwrite("../images/contours_none_image1.jpg", image_cpy);
 
-     Vec3b domColor = Couleur::MostFrequentColor(bird);
 
-     cout << "couleur dominante : " << domColor << endl;
-  
+        float sizeBird = Calcul::sizeOiseau(croppedImage);
+        cout << sizeBird <<" cm" << endl;
 
-    //algo knn
+        // Rect bdRect = boundingRect(contours[largestContourIndex]);
 
-    Bird b(domColor,sizeBird,"unknown");
-
-    vector<Bird> listb{Bird(Vec3b(255, 55, 0), 45, "Cockatiel"),
-            Bird(Vec3b(255, 55, 0), 50, "Triton cockatoo"),
-            Bird(Vec3b(255, 0, 0), 15, "Gouldian finch"),
-            Bird(Vec3b(255, 255, 255), 32, "Columba"),
-            Bird(Vec3b(255, 245, 250), 35, "Columba")};
         
-    
-    KNearestNeighbors knn(listb);
-    
-    vector<Bird> voisins = knn.getKNN(b, 1);
 
-    b.setName(voisins.at(0).getName());
+        // Mat croppedImage = image_cpy(bdRect);
 
-    knn.addNeighbors(b);
+        // imwrite("../images/cropped_image.jpg", croppedImage);
+
+        Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
+
+        cout << "couleur dominante : " << domColor << endl;
+
+         //algo knn
+
+        Bird b(domColor,sizeBird,"unknown");
 
 
-    cout << "espèce " << voisins.at(0).getName() << endl;
+        vector<Bird> listb{Bird(Vec3b(255, 55, 0), 45, "Cockatiel"),
+                Bird(Vec3b(255, 55, 0), 50, "Triton cockatoo"),
+                Bird(Vec3b(255, 0, 0), 15, "Gouldian finch"),
+                Bird(Vec3b(86, 178, 233), 16, "Mountain bluebird"),
+                Bird(Vec3b(201, 162, 57), 13, "Robin"),
+                Bird(Vec3b(225, 225, 51), 13, "atlantic canary"),
+                Bird(Vec3b(65, 105, 225), 25, "Blue Jay"),
+                Bird(Vec3b(255, 245, 250), 35, "Columba")};
+            
+        
+        KNearestNeighbors knn(listb);
+        
+        vector<Bird> voisins = knn.getKNN(b, 1);
 
-    
+        b.setName(voisins.at(0).getName());
+
+        knn.addNeighbors(b);
+
+        cout << "espèce " << voisins.at(0).getName() << endl;
+
+
+   }
+
+    Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
+    Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
+
 
     return 0;
 
