@@ -13,10 +13,13 @@ String Bird::getName() const{
     return this->name;
 }
 
+void Bird::setName(String n){
+    this->name=n;
+}
+
 Bird::Bird(Vec3b color[NB_COLOR], double size, String name) : name(name), size(size) {
     std::copy(color, color + NB_COLOR, this->color);
 }
-
 
 Bird::~Bird() {
 

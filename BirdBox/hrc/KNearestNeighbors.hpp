@@ -38,6 +38,8 @@ public:
 
     KNearestNeighbors(const KNearestNeighbors &) = delete;
 
+    void addNeighbors(const Bird &bird);
+
     static String getMostCommonType(const vector<Bird>& listEl);
 
     [[nodiscard]] vector<Bird> getKNNDistance(const Bird& b, int K, int type = EUCLIDEAN, int typeColor = RGB);
@@ -48,7 +50,9 @@ public:
 
 private:
 
-    vector<element> listBirdEl;
+    vector<element> listBirdEl;     
+
+        
 
     static unsigned long RGBToHexa(const Vec3b &rgb);
 
