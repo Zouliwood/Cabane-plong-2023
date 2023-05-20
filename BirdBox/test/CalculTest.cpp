@@ -1,7 +1,18 @@
 #include "../hrc/Calcul.hpp"
 #include <gtest/gtest.h>
 
-TEST(test, demo){
-    EXPECT_TRUE(true);
-    EXPECT_EQ(0, Calcul::angleSolid());
+/*class CalculTest :
+        public ::testing::Test{
+
+
+
 }
+
+
+TEST_P(CalculTest,sizeOiseau){
+    Mat ref = imread("../images/cabane vide.jpg", IMREAD_GRAYSCALE);
+    
+
+}
+*/
+

@@ -4,7 +4,7 @@ set(This BirdBoxTest)
 
 # Fichiers de test
 set(TestSources
-        CalculTest.cpp MatrixTest.cpp KNearestNeighborsTest.cpp)
+        CouleurTest.cpp ImageTest.cpp CalculTest.cpp MatrixTest.cpp KNearestNeighborsTest.cpp)
 
 # Sources et Headers
 set(Sources

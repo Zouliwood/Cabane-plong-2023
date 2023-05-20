@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 
+
 # Chemin de fichier
 set(HEADERS_DIR "hrc")
 set(SOURCES_DIR "src")

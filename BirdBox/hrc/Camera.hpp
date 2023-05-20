@@ -3,6 +3,8 @@
 
 #include <opencv2/calib3d.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/opencv.hpp>
+
 
 using namespace std;
 using namespace cv;
@@ -24,6 +26,8 @@ public:
     [[nodiscard]] float getLnBase() const;
 
     Camera(const Camera &) = delete;
+
+    static Mat getPic(String s);
 
     static const Camera &getUniqueInstance();
 

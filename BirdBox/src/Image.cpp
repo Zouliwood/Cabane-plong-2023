@@ -38,7 +38,7 @@ void Image::run(const Mat &image, function<void(int, int, int)> &&lambda, int ra
  * @param rayon  Dimensions du calque permettant de calculer l'érosion et la dilatation
  */
 void Image::morphGradient(const Mat &image, Mat &result, int rayon) {
-    Mat img_erosion = Mat::zeros(image.size(), image.type()), img_dilatation = Mat::zeros(image.size(), image.type());
+    Mat image_erosion = Mat::zeros(image.size(), image.type()), image_dilatation = Mat::zeros(image.size(), image.type());
 
     auto exp = [&](int i, int j, int rayon) mutable {
         Mat frag = image(Range(i - rayon, i + rayon), Range(j - rayon, j + rayon));
@@ -46,13 +46,13 @@ void Image::morphGradient(const Mat &image, Mat &result, int rayon) {
         Point minLoc, maxLoc;
         minMaxLoc(frag, &minVal, &maxVal, &minLoc, &maxLoc);
 
-        img_erosion.at<uchar>(i, j) = (int) minVal;
-        img_dilatation.at<uchar>(i, j) = (int) maxVal;
+        image_erosion.at<uchar>(i, j) = (int) minVal;
+        image_dilatation.at<uchar>(i, j) = (int) maxVal;
     };
 
     run(image, exp, rayon);
 
-    result = img_dilatation - img_erosion;
+    result = image_dilatation - image_erosion;
 }
 
 /**
@@ -73,6 +73,153 @@ void Image::masque(const Mat &image, const Mat &background, Mat &result, int seu
 }
 
 /**
+ * Même principe que masque, mais pour des images en couleur
+ * @param image      Image contenant l'objet à isoler
+ * @param background Image de référence
+ * @param result     Objet sur lequel la fonction doit travailler
+ * @param seuil      Le seuil permettant de délimiter la marge d'erreur
+ */
+void Image::masquecolor(const Mat &image, const Mat &background, Mat &result, int seuil) {
+    for (int i=0;i<image.rows;i++){
+        for (int j=0;j<image.cols;j++){
+           // cout<<"valeur " << norm(background.at<Vec3b>(i, j) - image.at<Vec3b>(i, j))<< endl;
+            if (norm(background.at<Vec3b>(i, j) - image.at<Vec3b>(i, j)) < seuil)
+                result.at<Vec3b>(i, j) = 0;
+        }
+    }
+}
+
+
+
+
+
+
+/**
+ * Rogne une image afin de conserver la différence avec une référence
+ * @param image      Image contenant l'objet à isoler
+ * @param background Image de référence
+ * @param result     Objet sur lequel la fonction doit travailler
+ */
+void Image::cropImage(Mat &image){
+
+    Rect bbox;
+    Mat grayImg;
+    cvtColor(image, grayImg, COLOR_BGR2GRAY);
+    threshold(grayImg, grayImg, 127, 255, THRESH_BINARY);
+    bbox = boundingRect(grayImg);
+
+
+    // Trouver les coordonnées des pixels non nuls
+    // vector<Point> nonZeroPoints;
+    // findNonZero(grayImg, nonZeroPoints);
+
+    // Calculer le rectangle de la zone à rogner
+    // Rect boundingRect = cv::boundingRect(nonZeroPoints);
+
+    Mat croppedImg = image(bbox);
+
+    image = croppedImg;
+
+}
+
+Mat Image::cropImg(Mat &image, Mat &oiseau){
+
+    vector<vector<Point>> contours;
+        vector<Vec4i> hierarchy;
+        findContours(image, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+
+        int largestContourIndex = 0;
+        double largestContourArea = 0.0;
+        for (int i = 0; i < contours.size(); ++i) {
+            double currentContourArea = contourArea(contours[i]);
+            if (currentContourArea > largestContourArea) {
+                largestContourArea = currentContourArea;
+                largestContourIndex = i;
+            }
+        }
+
+        Mat image_cpy = oiseau.clone();
+        drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
+    
+        imwrite("../images/oiseau_avec_contours.jpg", image_cpy);
+
+
+        return image_cpy;
+}
+
+
+void Image::bnry(Mat thresh){
+    Mat img_color = imread("../images/B.jpg", IMREAD_COLOR);
+    Mat img_gray;
+    cvtColor(img_color, img_gray, COLOR_BGR2GRAY);
+    Mat blurred;
+    GaussianBlur(img_gray, blurred, Size(5, 5), 0);
+    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    imwrite("../images/binary.jpg", thresh);
+ }
+
+
+Mat Image::msq(Mat oiseau, Mat ref){
+    Mat diffImage;
+    absdiff(ref, oiseau, diffImage);
+
+    Mat foregroundMask = Mat::zeros(diffImage.rows, diffImage.cols, CV_8UC1);
+
+    float thold = 30.0f;
+    float dist;
+
+    for(int j=0; j<diffImage.rows; ++j){
+        for(int i=0; i<diffImage.cols; ++i)
+        {
+            Vec3b pix = diffImage.at<Vec3b>(j,i);
+
+            dist = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+            dist = sqrt(dist);
+
+            if(dist>thold)
+            {
+                foregroundMask.at<unsigned char>(j,i) = 255;
+            }
+        }
+    }
+
+     Mat blurred;
+    GaussianBlur(foregroundMask, blurred, Size(5, 5), 0);
+    Mat thresh;
+    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    imwrite("../images/binary.jpg", thresh);
+
+    return thresh;
+}
+
+/*TODO: vector<Point>*/
+void Image::addContours(Mat thrwdwesh, Mat imagdwede_cpy){
+    Mat thresh;
+    Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
+    Mat image_cpy = oiseau.clone();
+    vector<vector<Point>> contours;
+    vector<Vec4i> hierarchy;
+    findContours(thresh, contours, hierarchy, RETR_TREE, CHAIN_APPROX_NONE);
+
+        int largestContourIndex = 0;
+        double largestContourArea = 0.0;
+        for (int i = 0; i < contours.size(); ++i) {
+            double currentContourArea = contourArea(contours[i]);
+            if (currentContourArea > largestContourArea) {
+                largestContourArea = currentContourArea;
+                largestContourIndex = i;
+            }
+        }
+
+
+    drawContours(image_cpy, contours, -1, Scalar(0, 255, 0), 2);
+    //imwrite("../images/contours_none_image1.jpg", image_cpy);
+    //return contours[largestContourIndex];
+
+}
+
+
+/**
  * Permet de placer un point dans une image
  * @param image Image où l'on veut placer le point
  * @param point Position du point
@@ -89,7 +236,7 @@ void Image::drawCross(Mat &image, Point &point, int rayon) {
 }
 
 /**
- * Permet d'obtenir les bordures d'objets présents su une image
+ * Permet d'obtenir les bordures d'objets présents sur une image
  * @param  masque Image contenant les objets
  * @return        Liste de bordures d'objets
  */
@@ -102,6 +249,13 @@ vector<vector<Point>> Image::getBordures(const Mat &masque) {
          [](const vector<Point> &listPoint1, const vector<Point> &listPoint2) {
              return contourArea(listPoint1, false) < contourArea(listPoint2, false);
          });
+
+    // for(vector<Point> p1: listBordures){
+    //     cout << endl;
+    //     for(Point p2: p1){
+    //         cout << p2 << endl;
+    //     }
+    // }
 
     return listBordures;
 
@@ -143,6 +297,6 @@ float Image::getPxSizeObject(const Mat &masque) {
         Point2f center;
         minEnclosingCircle(largestContour, center, pxObjSize);
     }
-
+    cout << "pxObjSize: "<< pxObjSize *2<< endl;
     return pxObjSize * 2;
 }
