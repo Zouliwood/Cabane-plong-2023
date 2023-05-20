@@ -192,7 +192,8 @@ Mat Image::msq(Mat oiseau, Mat ref){
     return thresh;
 }
 
-vector<Point> Image::addContours(Mat thrwdwesh, Mat imagdwede_cpy){
+/*TODO: vector<Point>*/
+void Image::addContours(Mat thrwdwesh, Mat imagdwede_cpy){
     Mat thresh;
     Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
     Mat image_cpy = oiseau.clone();

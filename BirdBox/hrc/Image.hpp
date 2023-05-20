@@ -33,7 +33,7 @@ public:
     static void bnry(Mat thresh);
 
 
-    static vector<Point> addContours(Mat thresh, Mat image_cpy);
+    static void addContours(Mat thresh, Mat image_cpy);
 
     static void drawCross(Mat &image, Point &point, int rayon = 10);
 
@@ -43,7 +43,7 @@ public:
 
     static vector<vector<Point>> getBordures(const Mat &masque);
 
-    static Mat getDifferenceImage(const Mat& image1, const Mat& image2);
+    /*static Mat getDifferenceImage(const Mat& image1, const Mat& image2);*/
 };
 
 #endif //BIRDBOX_IMAGE_HPP

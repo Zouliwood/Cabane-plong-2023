@@ -85,7 +85,7 @@ Mat Couleur::grapheHist(Mat histImage,Mat b_hist, Mat g_hist, Mat r_hist){
 }
 
 char * Couleur::idBird(Mat img_src){
-    
+    return (char *)0;
 }
 
 /**
