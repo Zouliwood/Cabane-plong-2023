@@ -68,8 +68,7 @@ int main(int argc, char **argv) {
 
             //algo knn
 
-            Bird b(domColor,sizeBird,"unknown");
-
+            
         Bird b(&domColor,sizeBird);
 
        Vec3b colorsMountainBluebird[NB_COLOR] = {Vec3b(86, 178, 233)};
