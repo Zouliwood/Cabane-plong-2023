@@ -27,6 +27,7 @@ public:
 
    static Mat cropImg(Mat &image_cpy, Mat &oiseau);
 
+    static Mat isolate(Mat t,Mat oiseau);
 
     static Mat msq(Mat oiseau, Mat ref);
 

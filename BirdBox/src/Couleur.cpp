@@ -170,7 +170,7 @@ Vec3b Couleur::MostFrequentColor(Mat image){
 
     for (auto const& element : color_freq) {
 
-        if (element.second> max_freq && element.first != Vec3b{0,255,0}){
+        if (element.second> max_freq && element.first != Vec3b{0,0,0}){
             most_frequent_color = element.first;
             max_freq = element.second;
         }

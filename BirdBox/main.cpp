@@ -20,8 +20,14 @@ int main(int argc, char **argv) {
         Mat oiseau=Camera::getPic("../images/oiseau.jpg");
 
         
+        // Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
+        // Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
 
-        Mat t = Image::msq( oiseau,  ref);
+        Mat t = Image::msq(oiseau,  ref);
+
+        Mat t_color = Image::isolate(t,oiseau);
+
+        t = imread("oiseau_isole.jpg", IMREAD_GRAYSCALE);
 
 
         vector<vector<Point>> contours;
@@ -47,39 +53,44 @@ int main(int argc, char **argv) {
         float sizeBird = Calcul::sizeOiseau(image_cpy);
         cout << sizeBird <<" cm" << endl;
 
-        Rect bdRect = boundingRect(contours[largestContourIndex]);
+        if(sizeBird>0){
+            Rect bdRect = boundingRect(contours[largestContourIndex]);
 
-        
+                
 
-        Mat croppedImage = image_cpy(bdRect);
+            Mat croppedImage = t_color(bdRect);
 
-        imwrite("../images/cropped_image.jpg", croppedImage);
-        cvtColor(croppedImage, croppedImage, COLOR_BGR2RGB);
-
-        Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
-
-        cout << "couleur dominante : " << domColor << endl;
-
-         //algo knn
-
-        Bird b(domColor,sizeBird,"unknown");
-
-
-        vector<Bird> listb{
-                Bird(Vec3b(86, 178, 233), 16, "Mountain bluebird"),
-                Bird(Vec3b(201, 162, 57), 13, "Robin"),
-                Bird(Vec3b(225, 225, 51), 13, "atlantic canary")};
+            imwrite("../images/cropped_image.jpg", croppedImage);
             
+            Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
+
+            cout << "couleur dominante : " << domColor << endl;
+
+            //algo knn
+
+            Bird b(domColor,sizeBird,"unknown");
+
+
+            vector<Bird> listb{
+                    Bird(Vec3b(86, 178, 233), 16, "Mountain bluebird"),
+                    Bird(Vec3b(201, 162, 57), 13, "Robin"),
+                    Bird(Vec3b(225, 225, 51), 13, "atlantic canary")};
+                    
+                
+            KNearestNeighbors knn(listb);
+                
+            vector<Bird> voisins = knn.getKNNDistance(b, 1);
+
+            b.setName(voisins.at(0).getName());
+
+            knn.addNeighbors(b);
+
+            cout << "espèce " << voisins.at(0).getName() << endl;
+        }else{
+            cout << "pas d'oiseau " << endl;
+        }
+
         
-        KNearestNeighbors knn(listb);
-        
-        vector<Bird> voisins = knn.getKNNDistance(b, 1);
-
-        b.setName(voisins.at(0).getName());
-
-        knn.addNeighbors(b);
-
-        cout << "espèce " << voisins.at(0).getName() << endl;
 
 
    }
