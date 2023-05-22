@@ -17,12 +17,18 @@ protected:
 
     void SetUp() override {
 
+        Vec3b cockatiel[NB_COLOR] = {Vec3b(255, 55, 0), Vec3b(255, 55, 0)};
+        Vec3b triton_cockatoo[NB_COLOR] = {Vec3b(255, 55, 0), Vec3b(255, 55, 0)};
+        Vec3b gouldian_finch[NB_COLOR] = {Vec3b(255, 0, 0), Vec3b(255, 0, 0)};
+        Vec3b columba[NB_COLOR] = {Vec3b(255, 255, 255), Vec3b(255, 255, 255)};
+        Vec3b columba_bis[NB_COLOR] = {Vec3b(255, 245, 250), Vec3b(255, 245, 250)};
+
         list.insert(list.end(), {
-            Bird(Vec3b(255, 55, 0), 45, "Cockatiel"),
-            Bird(Vec3b(255, 55, 0), 50, "Triton cockatoo"),
-            Bird(Vec3b(255, 0, 0), 15, "Gouldian finch"),
-            Bird(Vec3b(255, 255, 255), 32, "Columba"),
-            Bird(Vec3b(255, 245, 250), 35, "Columba")
+            Bird(cockatiel, 45, "Cockatiel"),
+            Bird(triton_cockatoo, 50, "Triton cockatoo"),
+            Bird(gouldian_finch, 15, "Gouldian finch"),
+            Bird(columba, 32, "Columba"),
+            Bird(columba_bis, 35, "Columba")
         });
 
         knn = KNearestNeighbors(list);
@@ -38,31 +44,40 @@ protected:
 
 };
 
+//Create helper
+Vec3b colors1[NB_COLOR] = {Vec3b(255, 10, 0), Vec3b(255, 10, 0)};
+Vec3b colors2[NB_COLOR] = {Vec3b(255, 255, 250), Vec3b(255, 255, 250)};
+Vec3b colors3[NB_COLOR] = {Vec3b(255, 250, 250), Vec3b(255, 250, 250)};
+Vec3b colors4[NB_COLOR] = {Vec3b(255, 245, 255), Vec3b(255, 245, 255)};
+
 INSTANTIATE_TEST_SUITE_P(
         KNNValues,
         KNearestNeighborsTest,
         testing::Values(
-            Bird(Vec3b(255, 10, 0), 45),
-            Bird(Vec3b(255, 255, 250), 50),
-            Bird(Vec3b(255, 250, 250), 15),
-            Bird(Vec3b(255, 245, 255), 32)
+            Bird(colors1, 45),
+            Bird(colors2, 50),
+            Bird(colors3, 15),
+            Bird(colors4, 32)
         )
 );
 
 TEST_F(KNearestNeighborsTest, ValueWindow) {
-    vector<Bird> result = knn.getKNNWindow(Bird(Vec3b(255, 55, 0), 49.7), 1);
+    Vec3b color[NB_COLOR] = {Vec3b(255, 55, 0), Vec3b(255, 55, 0)};
+    vector<Bird> result = knn.getKNNWindow(Bird(color, 49.7), 1);
 
     EXPECT_EQ(result.size(), 1);
 }
 
 TEST_F(KNearestNeighborsTest, ValueWindowEmpty) {
-    vector<Bird> result = knn.getKNNWindow(Bird(Vec3b(255, 55, 0), 47.5), 1);
+    Vec3b  color[NB_COLOR] = {Vec3b(255, 55, 0), Vec3b(255, 55, 0)};
+    vector<Bird> result = knn.getKNNWindow(Bird(color, 47.5), 1);
 
     EXPECT_TRUE(result.empty());
 }
 
 TEST_F(KNearestNeighborsTest, MostCloseValue) {
-    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(Bird(Vec3b(255, 55, 0), 47.5), 1, EUCLIDEAN, RGB));
+    Vec3b color[NB_COLOR] = {Vec3b(255, 55, 0), Vec3b(255, 55, 0)};
+    String result = KNearestNeighbors::getMostCommonType(knn.getKNNDistance(Bird(color, 47.5), 1, EUCLIDEAN, RGB));
 
     EXPECT_EQ(result, "Cockatiel");
 }

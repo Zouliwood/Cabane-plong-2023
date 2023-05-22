@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <ostream>
+#include <opencv2/core/mat.hpp>
 
 using namespace std;
 
@@ -11,6 +12,8 @@ class Matrix {
 public:
 
     explicit Matrix(size_t x = 1, size_t y = 1, int def = 0);
+
+    explicit Matrix(cv::Mat image);
 
     Matrix(const Matrix &mat) = default;
 
@@ -42,11 +45,14 @@ public:
 
     [[nodiscard]] size_t getY() const;
 
+    vector<double> getColumn(int pos) const;
+
+    vector<double> getLine(int pos) const;
+
+    vector<vector<double>> data;
 private:
 
     size_t x, y;
-
-    vector<vector<double>> data;
 
     friend ostream &operator<<(ostream &out, Matrix const &matrix);
 };
