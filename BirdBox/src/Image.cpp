@@ -183,13 +183,45 @@ Mat Image::msq(Mat oiseau, Mat ref){
         }
     }
 
-     Mat blurred;
-    GaussianBlur(foregroundMask, blurred, Size(5, 5), 0);
+    //  Mat blurred;
+    // GaussianBlur(foregroundMask, blurred, Size(5, 5), 0);
     Mat thresh;
-    threshold(blurred, thresh, 150, 255, THRESH_BINARY);
+    threshold(foregroundMask, thresh, 150, 255, THRESH_BINARY);
     imwrite("../images/binary.jpg", thresh);
 
     return thresh;
+}
+
+Mat Image::isolate(Mat t,Mat oiseau){
+    Mat bird= oiseau.clone();
+    // Mat t_binary;
+    // threshold(t, t_binary, 1, 255, cv::THRESH_BINARY);
+  // Load the source image
+    // cv::Mat t = cv::imread("source_image.png", cv::IMREAD_GRAYSCALE);
+    // if (t.empty()) {
+    //     std::cout << "Failed to load the source image." << std::endl;
+    //     return 1;
+    // }
+
+    // Create a new color image with the same dimensions as the source image
+    //cv::Mat oiseau(t.size(), CV_8UC3, cv::Scalar(255, 255, 255)); // Initialize with white pixels
+
+    // Iterate over each pixel in the source image
+    for (int y = 0; y < t.rows; y++) {
+        for (int x = 0; x < t.cols; x++) {
+            // Check if the pixel is black
+            if (t.at<uchar>(y, x) == 0) {
+                // Set the corresponding pixel in the destination image to black
+                bird.at<Vec3b>(y, x) = cv::Vec3b(0, 0, 0);
+            }
+        }
+    }
+
+    // Save the modified destination image
+    cv::imwrite("oiseau_isole.jpg", bird);
+
+
+    return bird;
 }
 
 /*TODO: vector<Point>*/

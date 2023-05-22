@@ -20,8 +20,14 @@ int main(int argc, char **argv) {
         Mat oiseau=Camera::getPic("../images/oiseau.jpg");
 
         
+        // Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
+        // Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
 
-        Mat t = Image::msq( oiseau,  ref);
+        Mat t = Image::msq(oiseau,  ref);
+
+        Mat t_color = Image::isolate(t,oiseau);
+
+        t = imread("oiseau_isole.jpg", IMREAD_GRAYSCALE);
 
 
         vector<vector<Point>> contours;
@@ -47,21 +53,22 @@ int main(int argc, char **argv) {
         float sizeBird = Calcul::sizeOiseau(image_cpy);
         cout << sizeBird <<" cm" << endl;
 
-        Rect bdRect = boundingRect(contours[largestContourIndex]);
+        if(sizeBird>0){
+            Rect bdRect = boundingRect(contours[largestContourIndex]);
 
-        
+                
 
-        Mat croppedImage = image_cpy(bdRect);
+            Mat croppedImage = t_color(bdRect);
 
-        imwrite("../images/cropped_image.jpg", croppedImage);
-        cvtColor(croppedImage, croppedImage, COLOR_BGR2RGB);
+            imwrite("../images/cropped_image.jpg", croppedImage);
+            
+            Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
 
-        Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
+            cout << "couleur dominante : " << domColor << endl;
 
-        cout << "couleur dominante : " << domColor << endl;
+            //algo knn
 
-         //algo knn
-
+            
         Bird b(&domColor,sizeBird);
 
        Vec3b colorsMountainBluebird[NB_COLOR] = {Vec3b(86, 178, 233)};
@@ -79,11 +86,14 @@ int main(int argc, char **argv) {
         
         vector<Bird> voisins = knn.getKNNDistance(b, 1);
 
-        b.setName(voisins.at(0).getName());
+            knn.addNeighbors(b);
 
-        knn.addNeighbors(b);
+            cout << "espèce " << voisins.at(0).getName() << endl;
+        }else{
+            cout << "pas d'oiseau " << endl;
+        }
 
-        cout << "espèce " << voisins.at(0).getName() << endl;
+        
 
 
    }
