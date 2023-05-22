@@ -70,18 +70,22 @@ int main(int argc, char **argv) {
 
             Bird b(domColor,sizeBird,"unknown");
 
+        Bird b(&domColor,sizeBird);
 
-            vector<Bird> listb{
-                    Bird(Vec3b(86, 178, 233), 16, "Mountain bluebird"),
-                    Bird(Vec3b(201, 162, 57), 13, "Robin"),
-                    Bird(Vec3b(225, 225, 51), 13, "atlantic canary")};
-                    
-                
-            KNearestNeighbors knn(listb);
-                
-            vector<Bird> voisins = knn.getKNNDistance(b, 1);
+       Vec3b colorsMountainBluebird[NB_COLOR] = {Vec3b(86, 178, 233)};
+       Vec3b colorsRobin[NB_COLOR] = {Vec3b(201, 162, 57)};
+       Vec3b colorsAtlanticCanary[NB_COLOR] = {Vec3b(225, 225, 51)};
 
-            b.setName(voisins.at(0).getName());
+        vector<Bird> listb{
+                Bird(colorsMountainBluebird, 16, "Mountain bluebird"),
+                Bird(colorsRobin, 13, "Robin"),
+                Bird(colorsAtlanticCanary, 13, "atlantic canary")
+        };
+            
+        
+        KNearestNeighbors knn(listb);
+        
+        vector<Bird> voisins = knn.getKNNDistance(b, 1);
 
             knn.addNeighbors(b);
 

@@ -3,7 +3,7 @@
 KNearestNeighbors::KNearestNeighbors(const vector<Bird> &listBird) {
     for (const auto &bird: listBird) {
         this->listBirdEl.push_back((element) {
-                .xHex=RGBToHexa(bird.getColor()),
+                .xHex=RGBToHexa(*bird.getColor()),
                 .xRGB=bird.getColor(),
                 .y=bird.getSize(),
                 .b=bird
@@ -13,7 +13,7 @@ KNearestNeighbors::KNearestNeighbors(const vector<Bird> &listBird) {
 
 void KNearestNeighbors::addNeighbors(const Bird &bird){
     this->listBirdEl.push_back((element) {
-            .xHex=RGBToHexa(bird.getColor()),
+            .xHex=RGBToHexa(*bird.getColor()),
             .xRGB=bird.getColor(),
             .y=bird.getSize(),
             .b=bird
@@ -29,7 +29,7 @@ vector<KNearestNeighbors::element> KNearestNeighbors::getListBirdEl() {
  * @param rgb Objet que l'on souhaite convertir.
  * @return    Une valeur hexadécimale en un long non-signé.
  */
-unsigned long KNearestNeighbors::RGBToHexa(const Vec3b &rgb) {
+unsigned long KNearestNeighbors::RGBToHexa(const Vec<uchar, 3> &rgb) {
     return ((rgb[0] & 0xff) << 16) + ((rgb[1] & 0xff) << 8) + (rgb[2] & 0xff);
 }
 
@@ -57,22 +57,23 @@ double KNearestNeighbors::getDistanceCosine(const KNearestNeighbors::element &p1
                                             const KNearestNeighbors::element &p2, int type) {
 
     double size = pow(p2.y - p1.y, 2);
-    double magnitudep1 = sqrt(pow(p1.xRGB[0], 2) + pow(p1.xRGB[1], 2) + pow(p1.xRGB[2], 2));
-    double magnitudep2 = sqrt(pow(p2.xRGB[0], 2) + pow(p2.xRGB[1], 2) + pow(p2.xRGB[2], 2));
-    double cosineSimilarity;
-    if (type == COSINE_NORMALIZED) {
-
-        double colorP1 = p1.xRGB[0] + p1.xRGB[1] + p1.xRGB[2];
-        double colorP2 = p2.xRGB[0] + p2.xRGB[1] + p2.xRGB[2];
-        cosineSimilarity = (p1.xRGB[0] * p2.xRGB[0] + p1.xRGB[1] * p2.xRGB[1] + p1.xRGB[2] * p2.xRGB[2]) /
-                           ((magnitudep1 / colorP1) * (magnitudep2 / colorP2));
-
-    } else if (type == COSINE) {
-
-        cosineSimilarity = (p1.xRGB[0] * p2.xRGB[0] + p1.xRGB[1] * p2.xRGB[1] + p1.xRGB[2] * p2.xRGB[2]) /
-                           (magnitudep1 * magnitudep2);
-
+    double magnitudep1 = 0, magnitudep2 = 0, cosineSimilarity = 0, colorP1 = 0, colorP2 = 0, tmp_cosine = 0;
+    for (int i = 0; i < NB_COLOR; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            colorP1 += p1.xRGB[i][j];
+            colorP2 += p2.xRGB[i][j];
+            tmp_cosine += p1.xRGB[i][j] * p2.xRGB[i][j];
+            magnitudep1 += pow(p1.xRGB[i][j], 2);
+            magnitudep2 += pow(p2.xRGB[i][j], 2);
+        }
     }
+    magnitudep1 = sqrt(magnitudep1);
+    magnitudep2 = sqrt(magnitudep2);
+    if (type == COSINE_NORMALIZED)
+        cosineSimilarity = (tmp_cosine) / ((magnitudep1 / colorP1) * (magnitudep2 / colorP2));
+    else if (type == COSINE)
+        cosineSimilarity = (tmp_cosine) / (magnitudep1 * magnitudep2);
+
     return sqrt((1 - cosineSimilarity) + size);
 
 }
@@ -84,21 +85,31 @@ double KNearestNeighbors::getDistanceEuclidean(const KNearestNeighbors::element 
     if (type == HEX)
         return sqrt(pow(p2.xHex - p1.xHex, 2) + size);
     else if (type == RGB_NORMALIZED) {
-        double colorP1 = p1.xRGB[0] + p1.xRGB[1] + p1.xRGB[2];
-        double colorP2 = p2.xRGB[0] + p2.xRGB[1] + p2.xRGB[2];
 
-        double normalizedP1[3] = {p1.xRGB[0] / colorP1, p1.xRGB[1] / colorP1, p1.xRGB[2] / colorP1};
-        double normalizedP2[3] = {p2.xRGB[0] / colorP2, p2.xRGB[1] / colorP2, p2.xRGB[2] / colorP2};
+        double colorP1, colorP2 = 0;
+        for (int i = 0; i < NB_COLOR; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                colorP1 += p1.xRGB[i][j];
+                colorP2 += p2.xRGB[i][j];
+            }
+        }
 
         double resNor = size;
-        for (int i = 0; i < 3; ++i)
-            resNor += pow(normalizedP2[i] - normalizedP1[i], 2);
+        for (int i = 0; i < NB_COLOR; ++i) {
+            double normalizedP1[3] = {p1.xRGB[i][0] / colorP1, p1.xRGB[i][1] / colorP1, p1.xRGB[i][2] / colorP1};
+            double normalizedP2[3] = {p2.xRGB[i][0] / colorP2, p2.xRGB[i][1] / colorP2, p2.xRGB[i][2] / colorP2};
+            for (int j = 0; j < 3; ++j)
+                resNor += pow(normalizedP2[j] - normalizedP1[j], 2);
+        }
 
         return resNor;
     } else /*if (type == RGB) */{
         double res = size;
-        for (int i = 0; i < 3; ++i)
-            res += pow(p2.xRGB[i] - p1.xRGB[i], 2);
+        for (int i = 0; i < NB_COLOR; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                res += pow(p2.xRGB[i][j] - p1.xRGB[i][j], 2);
+            }
+        }
         return sqrt(res);
     }
 
@@ -111,21 +122,31 @@ double KNearestNeighbors::getDistanceManhattan(const KNearestNeighbors::element 
     if (type == HEX)
         return fabs(p2.xHex - p1.xHex) + size;
     else if (type == RGB_NORMALIZED) {
-        double color_p1 = p1.xRGB[0] + p1.xRGB[1] + p1.xRGB[2];
-        double color_p2 = p2.xRGB[0] + p2.xRGB[1] + p2.xRGB[2];
 
-        double normalized_p1[3] = {p1.xRGB[0] / color_p1, p1.xRGB[1] / color_p1, p1.xRGB[2] / color_p1};
-        double normalized_p2[3] = {p2.xRGB[0] / color_p2, p2.xRGB[1] / color_p2, p2.xRGB[2] / color_p2};
+        double color_p1 = 0, color_p2 = 0;
+        for (int i = 0; i < NB_COLOR; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                color_p1 += p1.xRGB[i][j];
+                color_p2 += p2.xRGB[i][j];
+            }
+        }
 
         double res = size;
-        for (int i = 0; i < 3; ++i)
-            res += fabs(normalized_p2[i] - normalized_p1[i]);
+        for (int i = 0; i < NB_COLOR; ++i) {
+            double normalized_p1[3] = {p1.xRGB[i][0] / color_p1, p1.xRGB[i][1] / color_p1, p1.xRGB[i][2] / color_p1};
+            double normalized_p2[3] = {p2.xRGB[i][0] / color_p2, p2.xRGB[i][1] / color_p2, p2.xRGB[i][2] / color_p2};
+            for (int j = 0; j < 3; ++j)
+                res += fabs(normalized_p2[j] - normalized_p1[j]);
+        }
 
         return sqrt(res);
     } else /*if (type == RGB) */{
         double res = size;
-        for (int i = 0; i < 3; ++i)
-            res += fabs(p2.xRGB[i] - p1.xRGB[i]);
+        for (int i = 0; i < NB_COLOR; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                res += fabs(p2.xRGB[i][j] - p1.xRGB[i][j]);
+            }
+        }
         return sqrt(res);
     }
 
@@ -139,7 +160,7 @@ double KNearestNeighbors::getDistanceManhattan(const KNearestNeighbors::element 
  */
 vector<Bird> KNearestNeighbors::getKNNDistance(const Bird &b, int K, int type, int typeColor) {
     auto currBird = (element) {
-            .xHex=RGBToHexa(b.getColor()),
+            .xHex=RGBToHexa(*b.getColor()),
             .xRGB=b.getColor(),
             .y=b.getSize(),
             .b=b
@@ -173,7 +194,7 @@ vector<Bird> KNearestNeighbors::getKNNDistance(const Bird &b, int K, int type, i
  */
 vector<Bird> KNearestNeighbors::getKNNWindow(const Bird &b, int K, int type, int typeColor) {
     auto currBird = (element) {
-            .xHex=RGBToHexa(b.getColor()),
+            .xHex=RGBToHexa(*b.getColor()),
             .xRGB=b.getColor(),
             .y=b.getSize(),
             .b=b

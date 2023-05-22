@@ -1,38 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
+project(BirdBox)
 
 set(This BirdBoxTest)
 
-# Fichiers de test
-set(TestSources
-        CouleurTest.cpp ImageTest.cpp CalculTest.cpp MatrixTest.cpp KNearestNeighborsTest.cpp)
+# Chemin de fichier
+set(HEADERS_TEST_DIR "../hrc")
+set(SOURCES_TEST_DIR "../src")
 
-# Sources et Headers
-set(Sources
-    "${SOURCES_TEST_DIR}/Camera.cpp"
-    "${SOURCES_TEST_DIR}/Calcul.cpp"
-    "${SOURCES_TEST_DIR}/Image.cpp"
-    "${SOURCES_TEST_DIR}/Bird.cpp"
-    "${SOURCES_TEST_DIR}/Matrix.cpp"
-    "${SOURCES_TEST_DIR}/Couleur.cpp"
-    "${SOURCES_TEST_DIR}/MultilayerPerceptron.cpp"
-    "${SOURCES_TEST_DIR}/KNearestNeighbors.cpp"
-    "${SOURCES_TEST_DIR}/SingletonKNearestNeighbors.cpp"
-)
+# traiter les warnings comme des erreurs
+set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror")
 
-set(Headers
-    "${HEADERS_TEST_DIR}/Camera.hpp"
-    "${HEADERS_TEST_DIR}/Calcul.hpp"
-    "${HEADERS_TEST_DIR}/Image.hpp"
-    "${HEADERS_TEST_DIR}/Bird.hpp"
-    "${HEADERS_TEST_DIR}/Matrix.hpp"
-    "${HEADERS_TEST_DIR}/Couleur.hpp"
-    "${HEADERS_TEST_DIR}/MultilayerPerceptron.hpp"
-    "${HEADERS_TEST_DIR}/KNearestNeighbors.hpp"
-    "${HEADERS_TEST_DIR}/SingletonKNearestNeighbors.hpp"
+# Sources, Headers et tests
+file(GLOB ${This}_SRC CONFIGURE_DEPENDS
+    "${HEADERS_TEST_DIR}/*.hpp"
+    "${SOURCES_TEST_DIR}/*.cpp"
+    "*.cpp"
 )
 
 # Exécutable
-add_executable(${This} ${Headers} ${Sources} ${TestSources})
+add_executable(${This} ${${This}_SRC})
 target_link_libraries(${This} PUBLIC
     gtest_main
     ${OpenCV_LIBS}
