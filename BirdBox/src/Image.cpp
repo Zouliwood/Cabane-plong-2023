@@ -165,7 +165,7 @@ Mat Image::msq(Mat oiseau, Mat ref){
         {
             Vec3b pix = diffImage.at<Vec3b>(j,i);
 
-            dist = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);
+            dist = (pix[0]*pix[0] + pix[1]*pix[1] + pix[2]*pix[2]);     //calcul de distance entre les channels RGB
             dist = sqrt(dist);
 
             if(dist>thold)
@@ -195,7 +195,7 @@ Mat Image::isolate(Mat t,Mat oiseau){
         }
     }
 
-    cv::imwrite("oiseau_isole.jpg", bird);
+    cv::imwrite("../images/oiseau_isole.jpg", bird);
 
 
     return bird;
