@@ -6,6 +6,7 @@
 #include "Bird.hpp"
 #include <map>
 #include <stdexcept>
+#include <iostream>
 
 #define EUCLIDEAN 1
 #define MANHATTAN 0
