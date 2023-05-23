@@ -1,8 +1,6 @@
 #include "../hrc/Calcul.hpp"
 
-//TO DO: modifier selon les dimensions réelles de la cabane
 //grillage mur:
-//50 px -> 5cm
 int pxWall=55;
 float distWall=2.5;
 //grillage sol:
@@ -91,7 +89,6 @@ float Calcul::sizeObject(Mat &imageLeft, Mat &imageRight) {
     return (distance < 0) ? -1 : 2 * ratio * distance;
 }
 
-//TODO: Implémenter la fonction permettant de calculer la surface d'un oiseau.
 float Calcul::angleSolid(){
     return 0;
 }

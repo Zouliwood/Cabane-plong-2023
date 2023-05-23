@@ -12,16 +12,16 @@ using namespace cv;
 int main(int argc, char **argv) {
 
    while(1){
-        cout << "Photo Cabane vide";
-        cin.ignore();
-        Mat ref=Camera::getPic("../images/src_cabane.jpg");
-        cout << "Photo Oiseau";
-        cin.ignore();
-        Mat oiseau=Camera::getPic("../images/oiseau.jpg");
+        // cout << "Photo Cabane vide";
+        // cin.ignore();
+        // Mat ref=Camera::getPic("../images/src_cabane.jpg");
+        // cout << "Photo Oiseau";
+        // cin.ignore();
+        // Mat oiseau=Camera::getPic("../images/oiseau.jpg");
 
         
-        // Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
-        // Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
+        Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
+        Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
 
         Mat t = Image::msq(oiseau,  ref);
 
@@ -62,29 +62,31 @@ int main(int argc, char **argv) {
 
             imwrite("../images/cropped_image.jpg", croppedImage);
             
-            Vec3b domColor = Couleur::MostFrequentColor(croppedImage);
+            cout << "couleurs dominantes : " << endl;
+            vector<Vec3b> arrayColors = Couleur::MostFrequentColors(croppedImage,2);
+            Vec3b* domColor = arrayColors.data();
 
-            cout << "couleur dominante : " << domColor << endl;
-
+           
+        
             //algo knn
 
             
-        Bird b(&domColor,sizeBird);
+            Bird b(domColor,sizeBird);
 
-       Vec3b colorsMountainBluebird[NB_COLOR] = {Vec3b(86, 178, 233)};
-       Vec3b colorsRobin[NB_COLOR] = {Vec3b(201, 162, 57)};
-       Vec3b colorsAtlanticCanary[NB_COLOR] = {Vec3b(225, 225, 51)};
+            Vec3b colorsMountainBluebird[NB_COLOR] = {Vec3b(86, 178, 233),Vec3b(80, 178, 233)};
+            Vec3b colorsRobin[NB_COLOR] = {Vec3b(201, 162, 57),Vec3b(201, 160, 57)};
+            Vec3b colorsAtlanticCanary[NB_COLOR] = {Vec3b(225, 225, 51),Vec3b(225, 200, 51)};
 
-        vector<Bird> listb{
-                Bird(colorsMountainBluebird, 16, "Mountain bluebird"),
-                Bird(colorsRobin, 13, "Robin"),
-                Bird(colorsAtlanticCanary, 13, "atlantic canary")
-        };
+            vector<Bird> listb{
+                    Bird(colorsMountainBluebird, 16, "Mountain bluebird"),
+                    Bird(colorsRobin, 13, "Robin"),
+                    Bird(colorsAtlanticCanary, 13, "atlantic canary")
+            };
             
         
-        KNearestNeighbors knn(listb);
-        
-        vector<Bird> voisins = knn.getKNNDistance(b, 1);
+            KNearestNeighbors knn(listb);
+            
+            vector<Bird> voisins = knn.getKNNDistance(b, 1);
 
             knn.addNeighbors(b);
 
@@ -93,16 +95,12 @@ int main(int argc, char **argv) {
             cout << "pas d'oiseau " << endl;
         }
 
-        
+    }
 
-
-   }
-
-    // Mat ref = imread("../images/A.jpg", IMREAD_COLOR);
-    // Mat oiseau = imread("../images/B.jpg", IMREAD_COLOR);
-
-
+   
     return 0;
 
 }
+
+    
  

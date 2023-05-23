@@ -15,7 +15,7 @@ class Couleur {
         static double HistComp(Mat src, Mat comp);
         static Mat grapheHist(Mat histimg,Mat b_hist, Mat g_hist, Mat r_hist);
         vector<Vec3b> listcolours(Mat imc);
-        static Vec3b MostFrequentColor(Mat image);
+        static vector<Vec3b> MostFrequentColors(Mat image, int n);
 };
 
 #endif //BIRDBOX_COULEUR

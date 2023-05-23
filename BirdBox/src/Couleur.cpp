@@ -153,8 +153,7 @@ struct Vec3bComparator{
 };
 
 
-//TO DO: Tester que la couleur ne fait pas partie de celles dans la ref
-Vec3b Couleur::MostFrequentColor(Mat image){
+vector<Vec3b> Couleur::MostFrequentColors(Mat image, int numColors){
     map<Vec3b, int,Vec3bComparator> color_freq;
 
     for (int i=0;i<image.cols;i++){
@@ -163,19 +162,27 @@ Vec3b Couleur::MostFrequentColor(Mat image){
             color_freq[pixel]++;
         }
     }
+    vector<pair<Vec3b, int>> sorted_colors(color_freq.begin(), color_freq.end());
+    sort(sorted_colors.begin(), sorted_colors.end(),[](const auto& a, const auto& b) { return a.second > b.second; });
 
-    // Find the color with the highest frequency count
-    Vec3b most_frequent_color;
+    vector<Vec3b> most_frequent_colors;
     int max_freq = 0;
 
-    for (auto const& element : color_freq) {
-
-        if (element.second> max_freq && element.first != Vec3b{0,0,0}){
-            most_frequent_color = element.first;
-            max_freq = element.second;
+    for (auto const& element : sorted_colors) {
+        if (element.first != cv::Vec3b{0, 0, 0}) {
+            most_frequent_colors.push_back(element.first);
+            if (most_frequent_colors.size() == numColors){
+                break;
+            }
+                
         }
     }
 
-    return most_frequent_color;
+    for(Vec3b v: most_frequent_colors){
+        cout << v << endl;
+    }
+
+
+    return most_frequent_colors;
 
 }
