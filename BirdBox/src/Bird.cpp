@@ -17,7 +17,11 @@ void Bird::setName(String n){
     this->name=n;
 }
 
-Bird::Bird(Vec3b color[NB_COLOR], double size, String name) : name(name), size(size) {
+bool Bird::getIsPestBirdSpecies() const{
+    return this->isPestBirdSpecies;
+}
+
+Bird::Bird(Vec3b color[NB_COLOR], double size, String name, bool isPestBirdSpecies) : name(name), size(size), isPestBirdSpecies(isPestBirdSpecies) {
     std::copy(color, color + NB_COLOR, this->color);
 }
 

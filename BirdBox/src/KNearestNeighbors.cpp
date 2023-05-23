@@ -231,7 +231,7 @@ vector<Bird> KNearestNeighbors::getKNNWindow(const Bird &b, int K, int type, int
 /**
  * Permet d'obtenir l'élément le plus récurent dans une liste.
  * @param listBird La liste dans laquelle on souhaite regarder les éléments les plus fréquents.
- * @return         Le nom de l'élément le plus courant.
+ * @return         Le nom de l'élément le plus courant et lance une alarme.
  */
 String KNearestNeighbors::getMostCommonType(const vector<Bird> &listBird) {
     map<String, int> names;
@@ -246,6 +246,15 @@ String KNearestNeighbors::getMostCommonType(const vector<Bird> &listBird) {
         if (value > tmp_max) {
             tmp_max = value;
             tmp_res = key;
+        }
+    }
+
+    for (const auto & i : listBird) {
+        if(i.getName()==tmp_res && i.getIsPestBirdSpecies()){
+            cout << "\a" << endl;
+            std::string soundFile = "../Airhorns.wav";
+            std::string command = "aplay " + soundFile;
+            system(command.c_str());
         }
     }
 

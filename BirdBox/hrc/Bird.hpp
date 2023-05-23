@@ -15,6 +15,7 @@ private:
     String name;
     double size;
     Vec3b color[NB_COLOR];
+    bool isPestBirdSpecies;
 
 public:
 
@@ -26,10 +27,11 @@ public:
 
     void setName( String n);
 
-    Bird(Vec3b color[NB_COLOR], double size, String name="unknow");
+    Bird(Vec3b color[NB_COLOR], double size, String name="unknow", bool isPestBirdSpecies=false);
 
     ~Bird();
 
+    [[nodiscard]] bool getIsPestBirdSpecies() const;
 };
 
 
